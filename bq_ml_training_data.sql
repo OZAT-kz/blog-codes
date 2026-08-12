@@ -1,0 +1,7 @@
+// ==============================================================================
+// BigQuery ML Data Preparation
+// Source: OZAT Engineering Blog (https://ozat.kz)
+// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bq_ml_training_data.sql
+// ==============================================================================
+
+[sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS]
