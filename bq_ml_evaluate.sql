@@ -4,4 +4,6 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bq_ml_evaluate.sql
 // ==============================================================================
 
-[sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS][sS]
+
+-- Модельді бағалау
+SELECT * FROM ML.EVALUATE(MODEL \`ecommerce_ml.item_recommender\`);
