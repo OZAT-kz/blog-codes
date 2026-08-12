@@ -1,0 +1,13 @@
+// ==============================================================================
+// Provided by OZAT (https://github.com/OZAT-kz)
+// ==============================================================================
+
+/* CLS-ті болдырмауға арналған CSS */
+.ad-container {
+  min-height: 250px; /* Орынды брондаймыз */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa; /* Баннер жүктелгенше плейсхолдер */
+}
