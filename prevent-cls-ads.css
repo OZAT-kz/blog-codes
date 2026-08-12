@@ -1,0 +1,16 @@
+// ==============================================================================
+// CSS pattern to prevent Cumulative Layout Shift (CLS) for ads
+// Source: OZAT Engineering Blog (https://ozat.kz)
+// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/prevent-cls-ads.css
+// ==============================================================================
+
+
+/* CLS-ті болдырмауға арналған CSS */
+.ad-container {
+  min-height: 250px; /* Орынды брондаймыз */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa; /* Баннер жүктелгенше плейсхолдер */
+}
