@@ -35,7 +35,7 @@ const bookAppointmentTool = {
 // Функция обработки диалога с поддержкой Tools
 export async function handleUserMessageWithTools(userMessage: string) {
   const response = await ai.models.generateContent({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-3.1-flash',
     contents: [{ role: 'user', parts: [{ text: userMessage }] }],
     config: {
       tools: [bookAppointmentTool], // Передаем наши инструменты модели
@@ -55,7 +55,7 @@ export async function handleUserMessageWithTools(userMessage: string) {
       // Возвращаем результат выполнения функции обратно в модель, 
       // чтобы она сформировала человечный ответ
       const functionResponse = await ai.models.generateContent({
-        model: 'gemini-1.5-flash',
+        model: 'gemini-3.1-flash',
         contents: [
           { role: 'user', parts: [{ text: userMessage }] },
           // Добавляем запрос функции от модели в историю
