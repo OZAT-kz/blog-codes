@@ -23,7 +23,7 @@ export async function generateBotReply(userMessage: string, chatHistory: any[]) 
 3. Никогда не запрашивай полный ИИН в целях безопасности, проси только последние 4 цифры для верификации, если это необходимо для вызова функции.`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-3.1-flash',
     contents: [
       ...chatHistory,
       { role: 'user', parts: [{ text: userMessage }] }
