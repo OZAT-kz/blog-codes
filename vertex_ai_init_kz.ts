@@ -23,7 +23,7 @@ export async function generateBotReply(userMessage: string, chatHistory: any[]) 
 3. Қауіпсіздік мақсатында ешқашан толық ЖСН сұрама, функцияны шақыру үшін қажет болған жағдайда ғана верификация үшін соңғы 4 санын сұра.`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-3.1-flash',
     contents: [
       ...chatHistory,
       { role: 'user', parts: [{ text: userMessage }] }
