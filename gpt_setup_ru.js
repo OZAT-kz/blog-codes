@@ -4,7 +4,6 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/gpt_setup_ru.js
 // ==============================================================================
 
-
 // Инициализация Google Publisher Tag (GPT) с кастомным таргетингом
 window.googletag = window.googletag || {cmd: []};
 
