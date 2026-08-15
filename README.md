@@ -153,7 +153,7 @@ Ready to optimize your cloud architecture or integrate applied AI into your ente
 - 📐 **Architecture Calculator**: [Scope Builder](https://ozat.kz/scope-builder)
 - 🔍 **AI Readiness Check**: [Interactive AI Audit](https://ozat.kz/ai-audit)
 - 💼 **Case Studies**: [Client Success Stories](https://ozat.kz/cases)
-- ✉️ **Inquiries & Partnerships**: [adkeeps.sp@gmail.com](mailto:adkeeps.sp@gmail.com)
+- ✉️ **Inquiries & Partnerships**: [info@ozat.kz](mailto:info@ozat.kz)
 
 <br/>
 
