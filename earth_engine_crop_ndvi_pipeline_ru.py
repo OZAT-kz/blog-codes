@@ -4,12 +4,6 @@
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/earth_engine_crop_ndvi_pipeline_ru.py
 # ==============================================================================
 
-"""
-Google Earth Engine (GEE) Automated Agro-Monitoring Pipeline
-Calculates Cloud-Masked Multi-Spectral Indices (NDVI, NDWI, EVI) for 5M Hectares
-Source: OZAT Engineering (https://ozat.kz)
-"""
-
 import ee
 import datetime
 
