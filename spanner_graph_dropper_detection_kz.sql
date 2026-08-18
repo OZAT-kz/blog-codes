@@ -1,13 +1,7 @@
-// ==============================================================================
-// Cloud Spanner Graph GQL Дропперлерді анықтау схемасы мен сұраулары (KZ)
-// Source: OZAT Engineering Blog (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_graph_dropper_detection_kz.sql
-// ==============================================================================
-
 -- ==============================================================================
--- Cloud Spanner Graph: Anti-Money Laundering & Real-Time Dropper Ring Detection
--- Schema Definition with ISO/IEC GQL (Graph Query Language) & Graph Pattern Matching
--- Source: OZAT Engineering (https://ozat.kz)
+-- Cloud Spanner Graph GQL Дропперлерді анықтау схемасы мен сұраулары (KZ)
+-- Source: OZAT Engineering Blog (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_graph_dropper_detection_kz.sql
 -- ==============================================================================
 
 -- 1. Relational Tables Definition (Underlying Schema with Co-location Interleaving)
