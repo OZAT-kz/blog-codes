@@ -69,7 +69,7 @@ class MediaCDNSecurityManager:
                     "default_ttl": "2s",
                     "max_ttl": "8s",
                     "client_ttl": "1s",
-                    "origin_shield_location": "europe-west3", # Ближайший Shield к магистрали
+                    "origin_shield_location": "europe-west3",
                     "signed_request_mode": edgecache_v1.EdgeCacheService.RouteRule.CdnPolicy.SignedRequestMode.REQUIRE_TOKENS,
                     "signed_request_keyset": f"projects/{self.project_id}/locations/global/edgeCacheKeysets/shavkat-live-keyset",
                     "add_signatures": {
