@@ -4,12 +4,6 @@
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/realtime_graph_vector_antifraud_ru.py
 # ==============================================================================
 
-"""
-Real-Time Hybrid Dropper Detection Engine: Cloud Spanner Graph + Vertex AI Vector Search
-Achieves sub-4ms P99 latency for high-throughput (25,000+ TPS) instant P2P transfers.
-Source: OZAT Engineering (https://ozat.kz)
-"""
-
 import time
 import json
 import asyncio
