@@ -1,10 +1,9 @@
-// ==============================================================================
-// BigQuery GIS Spatial Join & Drought Anomaly Detection
-// Source: OZAT Engineering Blog (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_drought_spatial_analysis_kz.sql
-// ==============================================================================
+-- ==============================================================================
+-- BigQuery GIS Spatial Join & Drought Anomaly Detection
+-- Source: OZAT Engineering Blog (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_drought_spatial_analysis_kz.sql
+-- ==============================================================================
 
--- BigQuery GIS: Spatial Join & 10-Year Drought Anomaly Detection across 5M Hectares
 WITH CadastralFields AS (
   SELECT 
     field_id,
