@@ -5,7 +5,7 @@
 // ==============================================================================
 
 
-// Хук для ленивой загрузки скрипта AdSense
+// AdSense скриптін жалқау жүктеуге арналған хук
 import { useEffect, useState } from 'react';
 
 const useLazyAdSense = () => {
@@ -19,18 +19,18 @@ const useLazyAdSense = () => {
       script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
       script.async = true;
       script.crossOrigin = 'anonymous';
-      script.dataset.adClient = 'ca-pub-XXXXXXXXXXXXXXX'; // Ваш ID
+      script.dataset.adClient = 'ca-pub-XXXXXXXXXXXXXXX'; // Сіздің ID
       
       document.head.appendChild(script);
       setAdLoaded(true);
       
-      // Отписываемся от событий, чтобы не грузить скрипт дважды
+      // Скриптті екі рет жүктемеу үшін оқиғалардан бас тартамыз
       window.removeEventListener('scroll', loadAds);
       window.removeEventListener('mousemove', loadAds);
       window.removeEventListener('touchstart', loadAds);
     };
 
-    // Слушаем первые взаимодействия пользователя
+    // Пайдаланушының алғашқы әрекеттерін тыңдаймыз
     window.addEventListener('scroll', loadAds, { once: true, passive: true });
     window.addEventListener('mousemove', loadAds, { once: true, passive: true });
     window.addEventListener('touchstart', loadAds, { once: true, passive: true });
