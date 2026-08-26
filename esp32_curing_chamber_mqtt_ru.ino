@@ -1,5 +1,5 @@
 // ==============================================================================
-// ESP32 SHT35 Meat and Cheese Curing Chamber MQTT Firmware (Arduino / C++)
+// esp32_curing_chamber_mqtt_ru.ino
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/esp32_curing_chamber_mqtt_ru.ino
 // ==============================================================================
