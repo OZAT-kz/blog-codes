@@ -5,7 +5,7 @@
 // ==============================================================================
 
 import { initializeApp, getApps } from 'firebase/app';
-import { getDatabase, ref, set, onValue, push, runTransaction, update } from 'firebase/database';
+import { getDatabase, ref, set, get, onValue, push, runTransaction, update } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: "AIzaSy_OZAT_COFFEE_PROD_KEY",
@@ -17,6 +17,8 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const rtdb = getDatabase(app);
 
+export type PaymentState = 'pending' | 'qr_emitted' | 'authorized' | 'captured' | 'failed' | 'refunded';
+
 export interface KDSTicket {
   id: string;
   orderNumber: number;
@@ -27,7 +29,8 @@ export interface KDSTicket {
     syrup?: string;
   }>;
   totalKzt: number;
-  paidViaKaspi: boolean;
+  paymentState: PaymentState;
+  paymentRefKaspi?: string;
   status: 'pending' | 'in_progress' | 'completed' | 'canceled';
   createdAt: number;
 }
@@ -35,7 +38,7 @@ export interface KDSTicket {
 export class CoffeeKDSManager {
   private queueRef = ref(rtdb, 'kiosks/astana_bc_01/queue');
 
-  // Атомарная публикация тикета с инкрементом дневного номера заказа
+  // Атомарная публикация тикета с монотонным инкрементом суточного счетчика заказов
   async pushTicket(order: Omit<KDSTicket, 'id' | 'orderNumber' | 'createdAt' | 'status'>): Promise<string> {
     const counterRef = ref(rtdb, 'kiosks/astana_bc_01/daily_counter');
     let generatedOrderNum = 1;
@@ -72,17 +75,29 @@ export class CoffeeKDSManager {
     });
   }
 
-  // Обновление этапа приготовления бариста
-  async updateStatus(ticketId: string, status: KDSTicket['status']): Promise<void> {
+  // Детерминированное завершение заказа: атомарное чтение через get() и перенос в архив
+  async completeAndArchive(ticketId: string): Promise<void> {
     const itemRef = ref(rtdb, `kiosks/astana_bc_01/queue/${ticketId}`);
-    if (status === 'completed') {
-      // Перенос в суточный архив для предотвращения раздувания активного дерева
-      const archiveRef = ref(rtdb, `kiosks/astana_bc_01/archive/${ticketId}`);
-      const snapshot = await onValue(itemRef, (s) => s.val(), { onlyOnce: true });
-      await set(archiveRef, { ...snapshot, completedAt: Date.now() });
+    const archiveRef = ref(rtdb, `kiosks/astana_bc_01/archive/${ticketId}`);
+
+    const snapshot = await get(itemRef);
+    if (snapshot.exists()) {
+      const ticketData = snapshot.val();
+      await set(archiveRef, {
+        ...ticketData,
+        status: 'completed',
+        completedAt: Date.now()
+      });
       await set(itemRef, null);
-    } else {
-      await update(itemRef, { status });
     }
+  }
+
+  // Обновление платежного статуса при получении вебхука от Kaspi Pay
+  async updatePaymentState(ticketId: string, paymentState: PaymentState, paymentRefKaspi?: string): Promise<void> {
+    const itemRef = ref(rtdb, `kiosks/astana_bc_01/queue/${ticketId}`);
+    await update(itemRef, {
+      paymentState,
+      ...(paymentRefKaspi ? { paymentRefKaspi } : {})
+    });
   }
 }
