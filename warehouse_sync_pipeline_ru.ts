@@ -1,52 +1,115 @@
 // ==============================================================================
-// Warehouse Edge Vision Cloud Firestore Sync (RU)
+// Warehouse Offline Buffer & Idempotent Firestore Sync (TypeScript)
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/warehouse_sync_pipeline_ru.ts
 // ==============================================================================
 
-import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, setDoc, updateDoc, increment, serverTimestamp } from 'firebase/firestore';
+/**
+ * Промышленный сервис синхронизации мобильных результатов инвентаризации с Cloud Firestore.
+ * Поддерживает работу в условиях нестабильной сети в ангарах, локальную буферизацию
+ * и идемпотентное пакетное подтверждение (Batch Replay Prevention).
+ * Разработано инженерной лабораторией OZAT (https://ozat.kz).
+ */
 
-export interface InventoryScanBatch {
-  warehouseZone: string;       // e.g. "ZONE-B-RACK-04"
-  operatorUid: string;         // Ревизор
-  countedBoxes: number;        // Распознано нейросетью
-  palletBarcode?: string;      // Штрихкод паллеты
-  scanDurationSeconds: number; // Время съемки
-  deviceModel: string;         // Смартфон (e.g. "Pixel 8a")
-  tfliteInferenceMs: number;   // Средняя задержка инференса (18.4 мс)
-  clientBatchId: string;       // Идемпотентный UUID
+import {
+  Firestore,
+  doc,
+  runTransaction,
+  serverTimestamp,
+  increment,
+  Timestamp
+} from 'firebase/firestore';
+
+export interface InventoryScanSession {
+  warehouseId: string;
+  zoneId: string;
+  rackId: string;
+  palletBarcode?: string;
+  countedBoxes: number;
+  scanDurationSeconds: number;
+  operatorUid: string;
+  deviceModel: string;
+  clientBatchId: string; // Уникальный UUID для защиты от повторной записи при реконнекте
+  hardwareInferenceAvgMs: number;
+}
+
+export interface SyncResult {
+  success: boolean;
+  rackTotalBoxes: number;
+  syncedAt: string;
+  alreadyProcessed: boolean;
 }
 
 /**
- * Идемпотентная синхронизация результатов мобильного видеосканирования с Cloud Firestore / ERP
+ * Идемпотентная транзакционная синхронизация пакета ревизии с Cloud Firestore.
+ * Предотвращает дублирование счетчиков при повторной отправке из буфера при восстановлении сети.
  */
-export async function syncInventoryAuditBatch(db: any, batch: InventoryScanBatch): Promise<{ success: boolean; totalZoneCount: number }> {
-  const auditDocRef = doc(db, 'warehouse_audits', `${batch.warehouseZone}_${batch.clientBatchId}`);
-  const zoneSummaryRef = doc(db, 'warehouse_zones_summary', batch.warehouseZone);
-
-  const payload = {
-    ...batch,
-    syncedAt: serverTimestamp(),
-    auditStatus: 'VERIFIED_EDGE_VISION',
-    varianceStatus: 'AUTO_RECONCILED'
-  };
+export async function syncInventorySession(
+  db: Firestore,
+  session: InventoryScanSession
+): Promise<SyncResult> {
+  const auditDocRef = doc(db, 'warehouse_audits', `${session.warehouseId}_${session.zoneId}_${session.clientBatchId}`);
+  const rackSummaryRef = doc(db, 'warehouse_racks', `${session.warehouseId}_${session.rackId}`);
 
   try {
-    // 1. Фиксируем снимок сканирования
-    await setDoc(auditDocRef, payload, { merge: true });
+    const result = await runTransaction(db, async (transaction) => {
+      const auditSnapshot = await transaction.get(auditDocRef);
+      
+      // Проверка идемпотентности: если пакет уже был сохранен ранее, возвращаем статус без повторного инкремента
+      if (auditSnapshot.exists()) {
+        const existingData = auditSnapshot.data();
+        return {
+          success: true,
+          rackTotalBoxes: existingData.countedBoxes,
+          syncedAt: existingData.syncedAt?.toDate?.().toISOString() || new Date().toISOString(),
+          alreadyProcessed: true
+        };
+      }
 
-    // 2. Инкрементируем сводный остаток зоны
-    await updateDoc(zoneSummaryRef, {
-      lastAuditedAt: serverTimestamp(),
-      totalPhysicalBoxes: increment(batch.countedBoxes),
-      auditSessionsCount: increment(1)
+      // 1. Фиксация детальной сессии инспекции паллеты / стеллажа
+      const auditPayload = {
+        warehouseId: session.warehouseId,
+        zoneId: session.zoneId,
+        rackId: session.rackId,
+        palletBarcode: session.palletBarcode || null,
+        countedBoxes: session.countedBoxes,
+        scanDurationSeconds: session.scanDurationSeconds,
+        operatorUid: session.operatorUid,
+        deviceModel: session.deviceModel,
+        clientBatchId: session.clientBatchId,
+        hardwareInferenceAvgMs: session.hardwareInferenceAvgMs,
+        syncedAt: serverTimestamp(),
+        auditStatus: 'VERIFIED_VERTEX_EDGE_AI',
+        varianceStatus: 'AUTO_RECONCILED'
+      };
+      transaction.set(auditDocRef, auditPayload);
+
+      // 2. Атомарное обновление агрегированных остатков по стеллажу
+      transaction.set(
+        rackSummaryRef,
+        {
+          warehouseId: session.warehouseId,
+          rackId: session.rackId,
+          lastAuditedAt: serverTimestamp(),
+          lastOperatorUid: session.operatorUid,
+          totalPhysicalBoxes: increment(session.countedBoxes),
+          totalAuditSessions: increment(1)
+        },
+        { merge: true }
+      );
+
+      return {
+        success: true,
+        rackTotalBoxes: session.countedBoxes,
+        syncedAt: new Date().toISOString(),
+        alreadyProcessed: false
+      };
     });
 
-    console.log(`[WarehouseSync] Зона ${batch.warehouseZone}: Успешно синхронизировано +${batch.countedBoxes} коробок.`);
-    return { success: true, totalZoneCount: batch.countedBoxes };
+    console.log(`[OZAT-Sync] Стеллаж ${session.rackId} успешно синхронизирован (${session.countedBoxes} коробок).`);
+    return result;
   } catch (error) {
-    console.error(`[WarehouseSync Error] Ошибка репликации в облако:`, error);
+    console.error(`[OZAT-Sync Error] Ошибка репликации сессии ${session.clientBatchId}:`, error);
     throw error;
   }
 }
