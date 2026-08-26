@@ -5,7 +5,7 @@
 // ==============================================================================
 
 
--- Создаем полигон пробки
+-- Кептеліс полигонын құру SQL сұрауы
 SELECT
   ST_CONVEXHULL(ST_UNION_AGG(geo_point)) as traffic_jam_polygon,
   COUNT(DISTINCT courier_id) as stuck_couriers_count
