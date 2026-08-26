@@ -1,8 +1,9 @@
 // ==============================================================================
-// Vertex AI инициализациясы және жауап генерациясы
+// vertex_ai_init_kz.ts
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/vertex_ai_init_kz.ts
 // ==============================================================================
+
 
 import { GoogleGenAI } from '@google/genai';
 
@@ -23,7 +24,7 @@ export async function generateBotReply(userMessage: string, chatHistory: any[]) 
 3. Қауіпсіздік мақсатында ешқашан толық ЖСН сұрама, функцияны шақыру үшін қажет болған жағдайда ғана верификация үшін соңғы 4 санын сұра.`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3.1-flash',
+    model: 'gemini-2.5-flash',
     contents: [
       ...chatHistory,
       { role: 'user', parts: [{ text: userMessage }] }
