@@ -5,7 +5,7 @@
 // ==============================================================================
 
 
-// Cloud Function: BigQuery -> Firebase Auth синхрондау
+// Cloud Function: Синхронизация BigQuery -> Firebase Auth
 import * as admin from 'firebase-admin';
 import { BigQuery } from '@google-cloud/bigquery';
 
@@ -16,8 +16,8 @@ exports.syncWhalesToAuth = functions.pubsub.schedule('every 24 hours').onRun(asy
     const [rows] = await bq.query(query);
 
     for (const row of rows) {
-        // Custom Claim 'is_whale' = true орнатамыз
+        // Устанавливаем Custom Claim 'is_whale' = true
         await admin.auth().setCustomUserClaims(row.user_id, { is_whale: true });
     }
-    console.log(`${rows.length} кит синхрондалды.`);
+    console.log(`Синхронизировано ${rows.length} китов.`);
 });
