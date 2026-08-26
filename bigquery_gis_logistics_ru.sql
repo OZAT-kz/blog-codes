@@ -1,5 +1,5 @@
 // ==============================================================================
-// Гео-кластеризация доставок в BigQuery GIS (DBSCAN)
+// bigquery_gis_logistics_ru.sql
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_logistics_ru.sql
 // ==============================================================================
