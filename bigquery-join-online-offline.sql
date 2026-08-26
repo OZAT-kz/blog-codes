@@ -6,7 +6,7 @@
 
 
 WITH online_sessions AS (
-  -- Достаем сессии с Google Ads, где юзер залогинился (есть user_id)
+  -- Юзер логин жасаған Google Ads сессияларын аламыз (user_id бар)
   SELECT 
     user_id AS hashed_phone,
     CONCAT(user_pseudo_id, (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'ga_session_id')) AS session_id,
@@ -22,7 +22,7 @@ WITH online_sessions AS (
 ),
 
 offline_transactions AS (
-  -- Достаем наши офлайн транзакции
+  -- Біздің офлайн транзакцияларымызды аламыз
   SELECT 
     transaction_id,
     hashed_phone,
@@ -32,7 +32,7 @@ offline_transactions AS (
     `your-project.crm_data.offline_sales`
 )
 
--- Склеиваем!
+-- Желімдейміз!
 SELECT 
   o.transaction_id,
   o.revenue,
@@ -44,11 +44,11 @@ FROM
 JOIN 
   online_sessions s ON o.hashed_phone = s.hashed_phone
 WHERE
-  -- Покупка была ПОСЛЕ визита на сайт
+  -- Сатып алу сайтқа кіргеннен КЕЙІН болды
   o.transaction_date > s.session_time
-  -- Окно атрибуции (например, 7 дней)
+  -- Атрибуция терезесі (мысалы, 7 күн)
   AND TIMESTAMP_DIFF(o.transaction_date, s.session_time, DAY) <= 7
   AND s.utm_source = 'google' 
   AND s.utm_medium = 'cpc'
--- Берем только последний клик перед покупкой (Last Non-Direct Click)
+-- Сатып алу алдындағы тек соңғы кликті аламыз (Last Non-Direct Click)
 QUALIFY ROW_NUMBER() OVER(PARTITION BY o.transaction_id ORDER BY s.session_time DESC) = 1;
