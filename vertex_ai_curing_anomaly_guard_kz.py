@@ -1,5 +1,5 @@
 # ==============================================================================
-# Ет пен ірімшік камерасындағы ауытқуларды анықтайтын Vertex AI & Cloud Run қызметі (FastAPI)
+# vertex_ai_curing_anomaly_guard_kz.py
 # Source: OZAT Engineering Blog (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/vertex_ai_curing_anomaly_guard_kz.py
 # ==============================================================================
