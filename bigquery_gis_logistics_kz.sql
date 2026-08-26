@@ -1,5 +1,5 @@
 // ==============================================================================
-// BigQuery GIS арқылы жеткізілімдерді гео-кластерлеу (DBSCAN)
+// bigquery_gis_logistics_kz.sql
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_logistics_kz.sql
 // ==============================================================================
