@@ -1,5 +1,5 @@
 // ==============================================================================
-// ESP32 SHT35 ет және ірімшік баптау камерасының MQTT микробағдарламасы (Arduino / C++)
+// esp32_curing_chamber_mqtt_kz.ino
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/esp32_curing_chamber_mqtt_kz.ino
 // ==============================================================================
