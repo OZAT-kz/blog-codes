@@ -1,5 +1,5 @@
 // ==============================================================================
-// User propensity score segmentation preview
+// segmentation-preview.sql
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/segmentation-preview.sql
 // ==============================================================================
