@@ -7,7 +7,7 @@
 
 const AdUnit = ({ slotId }) => {
   useEffect(() => {
-    // Инициализация конкретного блока после загрузки скрипта
+    // Скрипт жүктелгеннен кейін нақты блокты инициализациялау
     if (window.adsbygoogle && window.adsbygoogle.loaded) {
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
