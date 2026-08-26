@@ -8,21 +8,24 @@ import { useState, useRef, useCallback } from 'react';
 
 const GATEWAY_WS_URL = 'wss://gemini-live-gateway.ozat.kz/v1/kiosk-session';
 
-export interface OrderItem {
+export type PaymentStatus = 'pending' | 'qr_emitted' | 'authorized' | 'captured' | 'failed' | 'refunded';
+
+export interface ValidatedOrderItem {
   sku: string;
   name: string;
   size: 'regular' | 'large';
   milk: 'standard' | 'oat' | 'coconut' | 'lactose_free';
   syrup?: string;
   temperature: 'hot' | 'iced';
-  priceKzt: number;
+  unitPriceKzt: number;
 }
 
 export interface KioskOrder {
   orderId: string;
-  items: OrderItem[];
+  items: ValidatedOrderItem[];
   totalKzt: number;
   paymentPayloadKaspi: string;
+  paymentState: PaymentStatus;
   status: 'draft' | 'validated' | 'paid' | 'pushed_to_kds';
 }
 
@@ -62,17 +65,17 @@ export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<
           },
           systemInstruction: {
             parts: [{
-              text: "Сен ОЗАТ Coffee Bar AI-көмекшісісің. Тез әрі нақты жұмыс істе. Қазақша, орысша немесе аралас сөйлегенді табиғи түсін. Клиент кофе түрі мен сүтін айтқан бойда validate_and_emit_ticket құралын шақыр."
+              text: "Сен ОЗАТ Coffee Bar AI-көмекшісісің. Тез әрі нақты жұмыс істе. Қазақша, орысша немесе аралас сөйлегенді табиғи түсін. Клиент кофе түрі мен сүтін айтқан бойда request_order_validation құралын шақыр. Бағаны өзің ойлап таппа."
             }]
           },
           tools: [{
             functionDeclarations: [{
-              name: 'validate_and_emit_ticket',
-              description: 'Қоймадағы қалдық бойынша тапсырыс құрамын тексереді және финализациялайды',
+              name: 'request_order_validation',
+              description: 'Қоймадағы қалдық бойынша тапсырыс құрамын тексереді және бағасын есептеуге жібереді',
               parameters: {
                 type: 'OBJECT',
                 properties: {
-                  items: {
+                  requestedItems: {
                     type: 'ARRAY',
                     items: {
                       type: 'OBJECT',
@@ -88,7 +91,7 @@ export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<
                     }
                   }
                 },
-                required: ['items']
+                required: ['requestedItems']
               }
             }]
           }]
@@ -100,21 +103,28 @@ export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<
 
         if (msg.toolCall?.functionCalls) {
           for (const call of msg.toolCall.functionCalls) {
-            if (call.name === 'validate_and_emit_ticket') {
-              const orderPayload: KioskOrder = {
-                orderId: 'ORD-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
-                items: call.args.items,
-                totalKzt: call.args.items.reduce((acc: number, item: any) => acc + (item.size === 'large' ? 1800 : 1400), 0),
-                paymentPayloadKaspi: 'https://kaspi.kz/pay/OZAT_COFFEE?order_id=' + Date.now(),
-                status: 'validated'
-              };
-              setCurrentOrder(orderPayload);
-              await onOrderReady(orderPayload);
+            if (call.name === 'request_order_validation') {
+              const res = await fetch('/api/v1/orders/validate-and-price', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: call.args.requestedItems })
+              });
+              const validatedPayload: KioskOrder = await res.json();
+
+              setCurrentOrder(validatedPayload);
+              await onOrderReady(validatedPayload);
 
               ws.send(JSON.stringify({
                 type: 'tool_response',
                 toolResponses: [{
-                  response: { output: { success: true, orderId: orderPayload.orderId } },
+                  response: {
+                    output: {
+                      success: true,
+                      orderId: validatedPayload.orderId,
+                      totalKzt: validatedPayload.totalKzt,
+                      currency: 'KZT'
+                    }
+                  },
                   id: call.id
                 }]
               }));
