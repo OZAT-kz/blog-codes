@@ -1,11 +1,11 @@
 // ==============================================================================
-// BigQuery GIS Traffic Polygon
+// bigquery_traffic_polygon.sql
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_traffic_polygon.sql
 // ==============================================================================
 
 
--- Кептеліс полигонын құру SQL сұрауы
+-- Создаем полигон пробки
 SELECT
   ST_CONVEXHULL(ST_UNION_AGG(geo_point)) as traffic_jam_polygon,
   COUNT(DISTINCT courier_id) as stuck_couriers_count
