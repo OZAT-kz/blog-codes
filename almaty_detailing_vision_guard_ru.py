@@ -1,5 +1,5 @@
 # ==============================================================================
-# Almaty Detailing Box AI Video Guard & Kaspi Reconciler (FastAPI + Vision API + Telegram)
+# almaty_detailing_vision_guard_ru.py
 # Source: OZAT Engineering Blog (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/almaty_detailing_vision_guard_ru.py
 # ==============================================================================
