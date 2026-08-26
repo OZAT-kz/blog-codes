@@ -5,12 +5,12 @@
 // ==============================================================================
 
 
-/* CLS-ті болдырмауға арналған CSS */
+/* CSS для предотвращения CLS */
 .ad-container {
-  min-height: 250px; /* Орынды брондаймыз */
+  min-height: 250px; /* Резервируем место */
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f8f9fa; /* Баннер жүктелгенше плейсхолдер */
+  background-color: #f8f9fa; /* Плейсхолдер, пока баннер грузится */
 }
