@@ -1,5 +1,5 @@
 # ==============================================================================
-# Алматы детейлинг бокстарын бейнебақылау және Kaspi салыстыру жүйесі (FastAPI + Vision API + Telegram)
+# almaty_detailing_vision_guard_kz.py
 # Source: OZAT Engineering Blog (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/almaty_detailing_vision_guard_kz.py
 # ==============================================================================
