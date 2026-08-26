@@ -1,5 +1,5 @@
 // ==============================================================================
-// Расчет Propensity Score в BigQuery
+// ga4_propensity_score_ru.sql
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/ga4_propensity_score_ru.sql
 // ==============================================================================
