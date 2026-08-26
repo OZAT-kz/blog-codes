@@ -5,11 +5,11 @@
 // ==============================================================================
 
 
-// Қосымшадағы/сайттағы клиенттік код
-// GPT + React интеграциясының толық мысалын GitHub-тан іздеңіз
+// Клиентский код в приложении/на сайте
+// Полный пример интеграции GPT + React ищите на GitHub
 
 async function initAds(userLat, userLon) {
-  // 1. Біздің кептеліс кэшімізді жылдам тексереміз
+  // 1. Быстро проверяем наш кэш пробок
   const trafficStatus = await checkTrafficJam(userLat, userLon); 
   
   window.googletag = window.googletag || {cmd: []};
@@ -17,7 +17,7 @@ async function initAds(userLat, userLon) {
     var slot = googletag.defineSlot('/1234567/almaty_app_banner', [300, 250], 'div-gpt-ad-123')
       .addService(googletag.pubads());
 
-    // 2. ҚҰПИЯ ИНГРЕДИЕНТ: Кептеліс контекстін Ad Manager-ге береміз
+    // 2. СЕКРЕТНЫЙ ИНГРЕДИЕНТ: Передаем контекст пробки в Ad Manager
     if (trafficStatus.isInJam) {
       slot.setTargeting('context', 'traffic_jam');
       slot.setTargeting('jam_severity', trafficStatus.severity); // e.g. '10_points'
