@@ -1,8 +1,8 @@
--- ==============================================================================
--- BigQuery GIS Spatial Join & Drought Anomaly Detection
--- Source: OZAT Engineering Blog (https://ozat.kz)
--- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_drought_spatial_analysis_kz.sql
--- ==============================================================================
+// ==============================================================================
+// bigquery_gis_drought_spatial_analysis_kz.sql
+// Source: OZAT Engineering Blog (https://ozat.kz)
+// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_drought_spatial_analysis_kz.sql
+// ==============================================================================
 
 WITH CadastralFields AS (
   SELECT 
