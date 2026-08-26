@@ -1,5 +1,5 @@
 // ==============================================================================
-// Node.js арқылы Document AI (Custom Extractor) жауабын парсингтеу
+// document_ai_parser_kz.js
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/document_ai_parser_kz.js
 // ==============================================================================
