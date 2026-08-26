@@ -4,7 +4,7 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery-detect-bots.sql
 // ==============================================================================
 
--- Пример SQL-запроса для выявления бот-сессий в BigQuery
+-- BigQuery-де бот-сессияларды анықтауға арналған SQL-сұрау мысалы
 WITH session_stats AS (
   SELECT
     user_pseudo_id,
@@ -13,9 +13,9 @@ WITH session_stats AS (
     COUNTIF(event_name = 'page_view') AS pageviews,
     MIN(event_timestamp) AS first_event,
     MAX(event_timestamp) AS last_event,
-    -- Флаг: сессия длилась меньше 3 секунд
+    -- Жалауша: сессия 3 секундтан аз созылды
     TIMESTAMP_DIFF(TIMESTAMP_MICROS(MAX(event_timestamp)), TIMESTAMP_MICROS(MIN(event_timestamp)), SECOND) < 3 AS is_too_short,
-    -- Флаг: только один просмотр страницы (100% bounce)
+    -- Жалауша: тек бір бет қаралды (100% bounce)
     COUNTIF(event_name = 'page_view') = 1 AS is_single_pageview
   FROM
     `your-project.analytics_123456789.events_*`
@@ -28,7 +28,7 @@ SELECT
   session_id,
   CASE 
     WHEN is_too_short AND is_single_pageview THEN 'Bot'
-    WHEN total_events > 500 THEN 'Scraper' -- Аномально много событий
+    WHEN total_events > 500 THEN 'Scraper' -- Аномалды көп оқиғалар
     ELSE 'Human'
   END AS traffic_type
 FROM
