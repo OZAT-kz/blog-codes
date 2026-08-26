@@ -1,5 +1,5 @@
 # ==============================================================================
-# Real-Time Spanner Graph + Vertex Vector Search Pipeline (RU)
+# realtime_graph_vector_antifraud_ru.py
 # Source: OZAT Engineering Blog (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/realtime_graph_vector_antifraud_ru.py
 # ==============================================================================
