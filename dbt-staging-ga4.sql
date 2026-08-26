@@ -1,11 +1,11 @@
 // ==============================================================================
-// dbt staging model for GA4 events
+// dbt-staging-ga4.sql
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/dbt-staging-ga4.sql
 // ==============================================================================
 
 
--- GA4 параметрлерін алуға арналған dbt-моделінің мысалы (Staging)
+-- Пример dbt-модели для извлечения параметров GA4 (Staging)
 SELECT
   event_date,
   event_timestamp,
