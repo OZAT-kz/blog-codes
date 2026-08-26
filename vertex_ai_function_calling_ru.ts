@@ -1,8 +1,9 @@
 // ==============================================================================
-// Бронирование очереди через Vertex AI Function Calling
+// vertex_ai_function_calling_ru.ts
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/vertex_ai_function_calling_ru.ts
 // ==============================================================================
+
 
 import { GoogleGenAI, Type } from '@google/genai';
 
@@ -35,7 +36,7 @@ const bookAppointmentTool = {
 // Функция обработки диалога с поддержкой Tools
 export async function handleUserMessageWithTools(userMessage: string) {
   const response = await ai.models.generateContent({
-    model: 'gemini-3.1-flash',
+    model: 'gemini-2.5-flash',
     contents: [{ role: 'user', parts: [{ text: userMessage }] }],
     config: {
       tools: [bookAppointmentTool], // Передаем наши инструменты модели
@@ -55,7 +56,7 @@ export async function handleUserMessageWithTools(userMessage: string) {
       // Возвращаем результат выполнения функции обратно в модель, 
       // чтобы она сформировала человечный ответ
       const functionResponse = await ai.models.generateContent({
-        model: 'gemini-3.1-flash',
+        model: 'gemini-2.5-flash',
         contents: [
           { role: 'user', parts: [{ text: userMessage }] },
           // Добавляем запрос функции от модели в историю
