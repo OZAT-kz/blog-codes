@@ -1,5 +1,5 @@
 # ==============================================================================
-# Нақты уақыттағы Spanner Graph + Vertex Vector Search антифрод конвейері (KZ)
+# realtime_graph_vector_antifraud_kz.py
 # Source: OZAT Engineering Blog (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/realtime_graph_vector_antifraud_kz.py
 # ==============================================================================
