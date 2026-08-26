@@ -4,32 +4,34 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/useGeminiLiveCoffeeOrder_ru.tsx
 // ==============================================================================
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 
 const GATEWAY_WS_URL = 'wss://gemini-live-gateway.ozat.kz/v1/kiosk-session';
 
-export interface OrderItem {
+export type PaymentStatus = 'pending' | 'qr_emitted' | 'authorized' | 'captured' | 'failed' | 'refunded';
+
+export interface ValidatedOrderItem {
   sku: string;
   name: string;
   size: 'regular' | 'large';
   milk: 'standard' | 'oat' | 'coconut' | 'lactose_free';
   syrup?: string;
   temperature: 'hot' | 'iced';
-  priceKzt: number;
+  unitPriceKzt: number;
 }
 
 export interface KioskOrder {
   orderId: string;
-  items: OrderItem[];
+  items: ValidatedOrderItem[];
   totalKzt: number;
   paymentPayloadKaspi: string;
+  paymentState: PaymentStatus;
   status: 'draft' | 'validated' | 'paid' | 'pushed_to_kds';
 }
 
 export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<void>) {
   const [sessionActive, setSessionActive] = useState(false);
   const [currentOrder, setCurrentOrder] = useState<KioskOrder | null>(null);
-  const [vadState, setVadState] = useState<'idle' | 'speaking' | 'processing'>('idle');
 
   const wsRef = useRef<WebSocket | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -54,7 +56,7 @@ export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<
 
       ws.onopen = () => {
         setSessionActive(true);
-        // Отправляем конфигурацию сессии к Gemini 2.5 Flash Multimodal Live
+        // Конфигурация сессии через надежный Cloud Run Gateway
         ws.send(JSON.stringify({
           type: 'session.setup',
           model: 'models/gemini-2.5-flash',
@@ -64,17 +66,17 @@ export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<
           },
           systemInstruction: {
             parts: [{
-              text: "Сен ОЗАТ Coffee Bar AI-көмекшісісің. Тез әрі нақты жұмыс істе. Қазақша, орысша немесе аралас сөйлегенді табиғи түсін. Клиент кофе түрі мен сүтін айтқан бойда validate_and_emit_ticket құралын шақыр. Жауаптарың 4-5 сөзден аспасын."
+              text: "Сен ОЗАТ Coffee Bar AI-көмекшісісің. Тез әрі нақты жұмыс істе. Қазақша, орысша немесе аралас сөйлегенді табиғи түсін. Клиент кофе түрі мен сүтін айтқан бойда request_order_validation құралын шақыр. Бағаны ешқашан өзің ойдан шығарма."
             }]
           },
           tools: [{
             functionDeclarations: [{
-              name: 'validate_and_emit_ticket',
-              description: 'Формирует и валидирует состав заказа по остаткам склада',
+              name: 'request_order_validation',
+              description: 'Отправляет нормализованный состав заказа на доверенный бэкенд для расчета цен и проверки остатков',
               parameters: {
                 type: 'OBJECT',
                 properties: {
-                  items: {
+                  requestedItems: {
                     type: 'ARRAY',
                     items: {
                       type: 'OBJECT',
@@ -90,7 +92,7 @@ export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<
                     }
                   }
                 },
-                required: ['items']
+                required: ['requestedItems']
               }
             }]
           }]
@@ -100,25 +102,33 @@ export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<
       ws.onmessage = async (evt) => {
         const msg = JSON.parse(evt.data);
 
-        // Обработка Function Call от Gemini 2.5 Flash
+        // Обработка Function Call: валидация заказа и расчет чека выполняется в доверенном микросервисе
         if (msg.toolCall?.functionCalls) {
           for (const call of msg.toolCall.functionCalls) {
-            if (call.name === 'validate_and_emit_ticket') {
-              const orderPayload: KioskOrder = {
-                orderId: 'ORD-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
-                items: call.args.items,
-                totalKzt: call.args.items.reduce((acc: number, item: any) => acc + (item.size === 'large' ? 1800 : 1400), 0),
-                paymentPayloadKaspi: 'https://kaspi.kz/pay/OZAT_COFFEE?order_id=' + Date.now(),
-                status: 'validated'
-              };
-              setCurrentOrder(orderPayload);
-              await onOrderReady(orderPayload);
+            if (call.name === 'request_order_validation') {
+              // Запрос к защищенному API калькуляции и генерации Kaspi Pay QR
+              const response = await fetch('/api/v1/orders/validate-and-price', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: call.args.requestedItems })
+              });
+              const validatedPayload: KioskOrder = await response.json();
 
-              // Отправляем результат работы тула обратно в модель
+              setCurrentOrder(validatedPayload);
+              await onOrderReady(validatedPayload);
+
+              // Возврат статуса в Live-сессию для голосового подтверждения клиенту
               ws.send(JSON.stringify({
                 type: 'tool_response',
                 toolResponses: [{
-                  response: { output: { success: true, orderId: orderPayload.orderId } },
+                  response: {
+                    output: {
+                      success: true,
+                      orderId: validatedPayload.orderId,
+                      totalKzt: validatedPayload.totalKzt,
+                      currency: 'KZT'
+                    }
+                  },
                   id: call.id
                 }]
               }));
@@ -127,12 +137,10 @@ export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<
         }
       };
 
-      // Инициализация Web Audio Worklet для потоковой передачи PCM
       const audioCtx = new AudioContext({ sampleRate: 16000 });
       audioCtxRef.current = audioCtx;
       const source = audioCtx.createMediaStreamSource(stream);
 
-      // Загрузка изолированного AudioWorklet процессора
       await audioCtx.audioWorklet.addModule('/audio-stream-processor.js');
       const workletNode = new AudioWorkletNode(audioCtx, 'audio-stream-processor');
       workletNodeRef.current = workletNode;
@@ -158,5 +166,5 @@ export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<
     wsRef.current?.close();
   }, []);
 
-  return { sessionActive, startSession, stopSession, currentOrder, vadState };
+  return { sessionActive, startSession, stopSession, currentOrder };
 }
