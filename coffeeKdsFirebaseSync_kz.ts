@@ -1,13 +1,12 @@
 // ==============================================================================
-// Firebase Realtime Database арқылы 50мс жылдамдықтағы бариста KDS дисплей жүйесі (TypeScript)
+// coffeeKdsFirebaseSync_kz.ts
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/coffeeKdsFirebaseSync_kz.ts
 // ==============================================================================
 
 import { initializeApp, getApps } from 'firebase/app';
-import { getDatabase, ref, set, onValue, push, update } from 'firebase/database';
+import { getDatabase, ref, set, onValue, push, runTransaction, update } from 'firebase/database';
 
-// Инициализация Firebase Realtime Database для кухонного KDS-экрана бариста
 const firebaseConfig = {
   apiKey: "AIzaSy_OZAT_COFFEE_PROD_KEY",
   authDomain: "ozat-astana-coffee.firebaseapp.com",
@@ -21,59 +20,65 @@ const rtdb = getDatabase(app);
 export interface KDSTicket {
   id: string;
   orderNumber: number;
-  clientName: string;
   items: Array<{
-    title: string;
-    cupSize: string;
+    name: string;
+    size: string;
     milk: string;
-    syrup: string;
-    extras: string;
+    syrup?: string;
   }>;
-  totalPriceKzt: number;
+  totalKzt: number;
   paidViaKaspi: boolean;
-  createdAtMs: number;
-  status: 'in_queue' | 'steaming_milk' | 'espresso_pulling' | 'ready_to_serve';
+  status: 'pending' | 'in_progress' | 'completed' | 'canceled';
+  createdAt: number;
 }
 
 export class CoffeeKDSManager {
-  private queueRef = ref(rtdb, 'astana_bc_kiosk_01/active_queue');
+  private queueRef = ref(rtdb, 'kiosks/astana_bc_01/queue');
 
-  // Мгновенная публикация заказа в Realtime DB (латентность синхронизации < 45мс)
-  async pushGeminiOrderToKDS(ticket: Omit<KDSTicket, 'id' | 'createdAtMs' | 'status'>): Promise<string> {
+  async pushTicket(order: Omit<KDSTicket, 'id' | 'orderNumber' | 'createdAt' | 'status'>): Promise<string> {
+    const counterRef = ref(rtdb, 'kiosks/astana_bc_01/daily_counter');
+    let generatedOrderNum = 1;
+
+    await runTransaction(counterRef, (currentVal) => {
+      generatedOrderNum = (currentVal || 0) + 1;
+      return generatedOrderNum;
+    });
+
     const newTicketRef = push(this.queueRef);
-    const payload: KDSTicket = {
-      ...ticket,
+    const ticketPayload: KDSTicket = {
+      ...order,
       id: newTicketRef.key!,
-      createdAtMs: Date.now(),
-      status: 'in_queue'
+      orderNumber: generatedOrderNum,
+      status: 'pending',
+      createdAt: Date.now()
     };
-    await set(newTicketRef, payload);
+
+    await set(newTicketRef, ticketPayload);
     return newTicketRef.key!;
   }
 
-  // Подписка экрана бариста на входящий поток заказов в реальном времени
-  subscribeToKDSQueue(onQueueUpdate: (tickets: KDSTicket[]) => void): () => void {
+  subscribeQueue(onUpdate: (tickets: KDSTicket[]) => void): () => void {
     return onValue(this.queueRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) {
-        onQueueUpdate([]);
+        onUpdate([]);
         return;
       }
       const list: KDSTicket[] = Object.values(data);
-      // Сортировка по времени поступления
-      list.sort((a, b) => a.createdAtMs - b.createdAtMs);
-      onQueueUpdate(list);
+      list.sort((a, b) => a.createdAt - b.createdAt);
+      onUpdate(list);
     });
   }
 
-  // Смена статуса бариста в 1 клик на сенсорном дисплее
-  async updateTicketStatus(ticketId: string, status: KDSTicket['status']): Promise<void> {
-    const ticketRef = ref(rtdb, `astana_bc_kiosk_01/active_queue/${ticketId}`);
-    if (status === 'ready_to_serve') {
-      // Архивируем и удаляем с активного экрана приготовления
-      await set(ticketRef, null);
+  async updateStatus(ticketId: string, status: KDSTicket['status']): Promise<void> {
+    const itemRef = ref(rtdb, `kiosks/astana_bc_01/queue/${ticketId}`);
+    if (status === 'completed') {
+      const archiveRef = ref(rtdb, `kiosks/astana_bc_01/archive/${ticketId}`);
+      const snapshot = await onValue(itemRef, (s) => s.val(), { onlyOnce: true });
+      await set(archiveRef, { ...snapshot, completedAt: Date.now() });
+      await set(itemRef, null);
     } else {
-      await update(ticketRef, { status });
+      await update(itemRef, { status });
     }
   }
 }
