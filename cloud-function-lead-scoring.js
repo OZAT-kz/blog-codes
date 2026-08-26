@@ -1,11 +1,11 @@
 // ==============================================================================
-// Cloud Function for realtime lead scoring with Vertex AI
+// cloud-function-lead-scoring.js
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/cloud-function-lead-scoring.js
 // ==============================================================================
 
 
-// Лидті скорингтеуге арналған Cloud Function фрагменті
+// Фрагмент Cloud Function для скоринга лида
 const { aiplatform } = require(\'@google-cloud/aiplatform\');
 const { BigQuery } = require(\'@google-cloud/bigquery\');
 
@@ -17,14 +17,14 @@ const client = new aiplatform.v1.PredictionServiceClient({
 exports.scoreLead = async (req, res) => {
   const { clientId, phone, crmLeadId } = req.body;
 
-  // 1. Юзердің жаңа фичалары үшін BigQuery-ге барамыз
+  // 1. Идем в BigQuery за свежими фичами юзера
   const query = `SELECT * FROM \`project.dbt_prod.user_features\` WHERE client_id = @clientId`;
   const [rows] = await bq.query({ query, params: { clientId } });
   
   if (!rows || rows.length === 0) return res.status(200).send(\'No data\');
   const features = rows[0];
 
-  // 2. Фичаларды Vertex AI-ге жібереміз
+  // 2. Отправляем фичи в Vertex AI
   const endpoint = `projects/PROJECT_ID/locations/europe-west4/endpoints/ENDPOINT_ID`;
   const instance = {
     structValue: {
@@ -43,11 +43,11 @@ exports.scoreLead = async (req, res) => {
     instances: [instance],
   });
 
-  // 3. Ықтималдықты аламыз (score 0-ден 1-ге дейін)
+  // 3. Получаем вероятность (score от 0 до 1)
   const predictionResult = response.predictions[0].structValue.fields;
   const score = predictionResult.classes.listValue.values[0].numberValue;
 
-  // 4. Нәтижені кері CRM-ге (amoCRM) жібереміз
+  // 4. Отправляем результат обратно в CRM (amoCRM)
   await updateCrmLead(crmLeadId, { 
     \'score\': score, 
     \'priority\': score > 0.7 ? \'HIGH\' : \'LOW\' 
