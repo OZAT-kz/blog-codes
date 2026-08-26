@@ -1,8 +1,9 @@
 // ==============================================================================
-// Vertex AI Function Calling арқылы кезек брондау
+// vertex_ai_function_calling_kz.ts
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/vertex_ai_function_calling_kz.ts
 // ==============================================================================
+
 
 import { GoogleGenAI, Type } from '@google/genai';
 
@@ -35,7 +36,7 @@ const bookAppointmentTool = {
 // Tools қолдауы бар диалогты өңдеу функциясы
 export async function handleUserMessageWithTools(userMessage: string) {
   const response = await ai.models.generateContent({
-    model: 'gemini-3.1-flash',
+    model: 'gemini-2.5-flash',
     contents: [{ role: 'user', parts: [{ text: userMessage }] }],
     config: {
       tools: [bookAppointmentTool], // Модельге құралдарымызды береміз
@@ -55,7 +56,7 @@ export async function handleUserMessageWithTools(userMessage: string) {
       // Адамға түсінікті жауап құрастыру үшін функцияның орындалу нәтижесін
       // кері модельге қайтарамыз
       const functionResponse = await ai.models.generateContent({
-        model: 'gemini-3.1-flash',
+        model: 'gemini-2.5-flash',
         contents: [
           { role: 'user', parts: [{ text: userMessage }] },
           // Модельден функция сұрауын тарихқа қосамыз
