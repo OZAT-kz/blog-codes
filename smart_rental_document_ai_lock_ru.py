@@ -1,5 +1,5 @@
 # ==============================================================================
-# Almaty & Astana Smart Rental Self-Check-in Guard (Document AI + TTLock/Tuya API + Telegram)
+# smart_rental_document_ai_lock_ru.py
 # Source: OZAT Engineering Blog (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/smart_rental_document_ai_lock_ru.py
 # ==============================================================================
