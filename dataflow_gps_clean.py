@@ -5,13 +5,13 @@
 # ==============================================================================
 
 
-# Dataflow (Apache Beam) құбырының фрагменті
+# Фрагмент пайплайна Dataflow (Apache Beam)
 import apache_beam as beam
 import json
 
 def parse_and_clean_gps(message):
     data = json.loads(message)
-    # GPS аномалияларын сүзу (мысалы, Қапшағайдағы нүктелерді алып тастау)
+    # Фильтруем аномалии GPS (например, отстрелы в Капчагай)
     if 43.0 < data['lat'] < 43.6 and 76.6 < data['lon'] < 77.2:
         yield data
 
