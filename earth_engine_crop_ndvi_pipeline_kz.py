@@ -1,5 +1,5 @@
 # ==============================================================================
-# Google Earth Engine Agro-Monitoring Pipeline (NDVI, NDWI, EVI)
+# earth_engine_crop_ndvi_pipeline_kz.py
 # Source: OZAT Engineering Blog (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/earth_engine_crop_ndvi_pipeline_kz.py
 # ==============================================================================
