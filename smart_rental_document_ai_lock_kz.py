@@ -1,5 +1,5 @@
 # ==============================================================================
-# Алматы мен Астанадағы пәтерлерге арналған ақылды құлып және құжат тексеру жүйесі (Document AI + TTLock + Telegram)
+# smart_rental_document_ai_lock_kz.py
 # Source: OZAT Engineering Blog (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/smart_rental_document_ai_lock_kz.py
 # ==============================================================================
