@@ -5,7 +5,7 @@
 // ==============================================================================
 
 
-// Пример хэширования на клиенте (хотя лучше делать на бэкенде)
+// Клиентте хэштеу мысалы (бірақ бэкендте жасаған дұрыс)
 async function sha256(message) {
     const msgBuffer = new TextEncoder().encode(message);                    
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -14,11 +14,11 @@ async function sha256(message) {
     return hashHex;
 }
 
-// При успешной авторизации
-const rawPhone = '+77011234567'; // Телефон из формы
+// Сәтті авторизация кезінде
+const rawPhone = '+77011234567'; // Формадан алынған телефон
 sha256(rawPhone).then(hashedPhone => {
     gtag('config', 'G-XXXXXXX', {
-      'user_id': hashedPhone // Теперь это анонимный хэш
+      'user_id': hashedPhone // Енді бұл анонимді хэш
     });
     gtag('event', 'login', { method: 'phone' });
 });
