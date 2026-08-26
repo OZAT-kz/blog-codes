@@ -1,119 +1,162 @@
 // ==============================================================================
-// React Hook for Gemini 2.0 Flash Multimodal Live Audio & Kaspi QR Stream (TypeScript)
+// useGeminiLiveCoffeeOrder_ru.tsx
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/useGeminiLiveCoffeeOrder_ru.tsx
 // ==============================================================================
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 
-// Конфигурация WebSocket шлюза к Gemini 2.0 Flash Multimodal Live API (Cloud Run)
-const GEMINI_LIVE_WS_URL = 'wss://gemini-live-gateway-prod-xyz.a.run.app/ws/coffee-kiosk';
+const GATEWAY_WS_URL = 'wss://gemini-live-gateway.ozat.kz/v1/kiosk-session';
 
-interface CoffeeItem {
+export interface OrderItem {
+  sku: string;
   name: string;
-  size: 'small' | 'medium' | 'large';
-  milkType: 'cow' | 'oat' | 'coconut' | 'almond';
+  size: 'regular' | 'large';
+  milk: 'standard' | 'oat' | 'coconut' | 'lactose_free';
   syrup?: string;
-  sugar: number;
-  price: number;
+  temperature: 'hot' | 'iced';
+  priceKzt: number;
 }
 
-interface OrderState {
+export interface KioskOrder {
   orderId: string;
-  items: CoffeeItem[];
+  items: OrderItem[];
   totalKzt: number;
-  kaspiQrUrl?: string;
-  status: 'listening' | 'confirming' | 'awaiting_payment' | 'sent_to_kds';
+  paymentPayloadKaspi: string;
+  status: 'draft' | 'validated' | 'paid' | 'pushed_to_kds';
 }
 
-export function useGeminiLiveCoffeeOrder(onOrderFinalized: (order: OrderState) => void) {
-  const [isRecording, setIsRecording] = useState(false);
-  const [liveTranscript, setLiveTranscript] = useState('');
-  const [currentOrder, setCurrentOrder] = useState<OrderState | null>(null);
-  
+export function useGeminiLiveKiosk(onOrderReady: (order: KioskOrder) => Promise<void>) {
+  const [sessionActive, setSessionActive] = useState(false);
+  const [currentOrder, setCurrentOrder] = useState<KioskOrder | null>(null);
+  const [vadState, setVadState] = useState<'idle' | 'speaking' | 'processing'>('idle');
+
   const wsRef = useRef<WebSocket | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const processorRef = useRef<ScriptProcessorNode | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const workletNodeRef = useRef<AudioWorkletNode | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
 
-  const startLiveOrdering = useCallback(async () => {
+  const startSession = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: { sampleRate: 16000, channelCount: 1, echoCancellation: true, noiseSuppression: true }
+        audio: {
+          channelCount: 1,
+          sampleRate: 16000,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
       });
       mediaStreamRef.current = stream;
 
-      const ws = new WebSocket(GEMINI_LIVE_WS_URL);
+      const ws = new WebSocket(GATEWAY_WS_URL);
       wsRef.current = ws;
 
       ws.onopen = () => {
-        setIsRecording(true);
-        console.log('[Gemini Live] Bidirectional Audio Session Started');
-        
-        // Передаем системный промпт бариста-ассистента с поддержкой шала-казахского сленга
+        setSessionActive(true);
+        // Отправляем конфигурацию сессии к Gemini 2.5 Flash Multimodal Live
         ws.send(JSON.stringify({
-          setup: {
-            model: "models/gemini-2.0-flash-exp",
-            systemInstruction: {
-              parts: [{
-                text: "Ты ультра-быстрый AI-бариста в кофейне БЦ Астаны. Распознавай речь на лету (русский, казахский, шала-казахский). Как только гость назвал кофе и молоко, мгновенно сформируй JSON структуру заказа и вызови функцию finalize_coffee_ticket. Отвечай ультра-лаконично (не более 4-5 слов)."
-              }]
-            },
-            generationConfig: { responseModalities: ["AUDIO", "TEXT"] }
-          }
+          type: 'session.setup',
+          model: 'models/gemini-2.5-flash',
+          generationConfig: {
+            temperature: 0.1,
+            responseModalities: ['AUDIO', 'TEXT']
+          },
+          systemInstruction: {
+            parts: [{
+              text: "Сен ОЗАТ Coffee Bar AI-көмекшісісің. Тез әрі нақты жұмыс істе. Қазақша, орысша немесе аралас сөйлегенді табиғи түсін. Клиент кофе түрі мен сүтін айтқан бойда validate_and_emit_ticket құралын шақыр. Жауаптарың 4-5 сөзден аспасын."
+            }]
+          },
+          tools: [{
+            functionDeclarations: [{
+              name: 'validate_and_emit_ticket',
+              description: 'Формирует и валидирует состав заказа по остаткам склада',
+              parameters: {
+                type: 'OBJECT',
+                properties: {
+                  items: {
+                    type: 'ARRAY',
+                    items: {
+                      type: 'OBJECT',
+                      properties: {
+                        sku: { type: 'STRING' },
+                        name: { type: 'STRING' },
+                        size: { type: 'STRING', enum: ['regular', 'large'] },
+                        milk: { type: 'STRING', enum: ['standard', 'oat', 'coconut', 'lactose_free'] },
+                        syrup: { type: 'STRING' },
+                        temperature: { type: 'STRING', enum: ['hot', 'iced'] }
+                      },
+                      required: ['sku', 'name', 'size', 'milk']
+                    }
+                  }
+                },
+                required: ['items']
+              }
+            }]
+          }]
         }));
       };
 
-      ws.onmessage = async (event) => {
-        const data = JSON.parse(event.data);
-        if (data.serverContent?.modelTurn?.parts) {
-          for (const part of data.serverContent.modelTurn.parts) {
-            if (part.text) setLiveTranscript(prev => prev + ' ' + part.text);
-          }
-        }
-        if (data.toolCall?.functionCalls) {
-          for (const call of data.toolCall.functionCalls) {
-            if (call.name === 'finalize_coffee_ticket') {
-              const orderData: OrderState = call.args;
-              setCurrentOrder(orderData);
-              onOrderFinalized(orderData);
+      ws.onmessage = async (evt) => {
+        const msg = JSON.parse(evt.data);
+
+        // Обработка Function Call от Gemini 2.5 Flash
+        if (msg.toolCall?.functionCalls) {
+          for (const call of msg.toolCall.functionCalls) {
+            if (call.name === 'validate_and_emit_ticket') {
+              const orderPayload: KioskOrder = {
+                orderId: 'ORD-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+                items: call.args.items,
+                totalKzt: call.args.items.reduce((acc: number, item: any) => acc + (item.size === 'large' ? 1800 : 1400), 0),
+                paymentPayloadKaspi: 'https://kaspi.kz/pay/OZAT_COFFEE?order_id=' + Date.now(),
+                status: 'validated'
+              };
+              setCurrentOrder(orderPayload);
+              await onOrderReady(orderPayload);
+
+              // Отправляем результат работы тула обратно в модель
+              ws.send(JSON.stringify({
+                type: 'tool_response',
+                toolResponses: [{
+                  response: { output: { success: true, orderId: orderPayload.orderId } },
+                  id: call.id
+                }]
+              }));
             }
           }
         }
       };
 
-      // Захват PCM 16kHz микрофонного потока и потоковая отправка чанков по 100мс
+      // Инициализация Web Audio Worklet для потоковой передачи PCM
       const audioCtx = new AudioContext({ sampleRate: 16000 });
-      audioContextRef.current = audioCtx;
+      audioCtxRef.current = audioCtx;
       const source = audioCtx.createMediaStreamSource(stream);
-      const processor = audioCtx.createScriptProcessor(4096, 1, 1);
-      processorRef.current = processor;
 
-      processor.onaudioprocess = (e) => {
-        const inputData = e.inputBuffer.getChannelData(0);
-        const pcm16 = new Int16Array(inputData.length);
-        for (let i = 0; i < inputData.length; i++) {
-          pcm16[i] = Math.max(-1, Math.min(1, inputData[i])) * 0x7FFF;
-        }
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(pcm16.buffer);
+      // Загрузка изолированного AudioWorklet процессора
+      await audioCtx.audioWorklet.addModule('/audio-stream-processor.js');
+      const workletNode = new AudioWorkletNode(audioCtx, 'audio-stream-processor');
+      workletNodeRef.current = workletNode;
+
+      workletNode.port.onmessage = (e) => {
+        if (ws.readyState === WebSocket.OPEN && e.data.pcm16Chunk) {
+          ws.send(e.data.pcm16Chunk);
         }
       };
 
-      source.connect(processor);
-      processor.connect(audioCtx.destination);
+      source.connect(workletNode);
     } catch (err) {
-      console.error('[Gemini Live] Mic Init Error:', err);
+      console.error('[Gemini Live Gateway] Init error:', err);
+      setSessionActive(false);
     }
-  }, [onOrderFinalized]);
+  }, [onOrderReady]);
 
-  const stopLiveOrdering = useCallback(() => {
-    setIsRecording(false);
+  const stopSession = useCallback(() => {
+    setSessionActive(false);
     mediaStreamRef.current?.getTracks().forEach(t => t.stop());
-    processorRef.current?.disconnect();
-    audioContextRef.current?.close();
+    workletNodeRef.current?.disconnect();
+    audioCtxRef.current?.close();
     wsRef.current?.close();
   }, []);
 
-  return { isRecording, startLiveOrdering, stopLiveOrdering, liveTranscript, currentOrder };
+  return { sessionActive, startSession, stopSession, currentOrder, vadState };
 }
