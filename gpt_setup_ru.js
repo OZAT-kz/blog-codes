@@ -1,5 +1,5 @@
 // ==============================================================================
-// Инициализация Google Publisher Tag с Custom Targeting
+// gpt_setup_ru.js
 // Source: OZAT Engineering Blog (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/gpt_setup_ru.js
 // ==============================================================================
