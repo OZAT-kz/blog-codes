@@ -1,8 +1,8 @@
--- ==============================================================================
--- Cloud Spanner Graph GQL Dropper Detection Schema & Queries (RU)
--- Source: OZAT Engineering Blog (https://ozat.kz)
--- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_graph_dropper_detection_ru.sql
--- ==============================================================================
+// ==============================================================================
+// spanner_graph_dropper_detection_ru.sql
+// Source: OZAT Engineering Blog (https://ozat.kz)
+// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_graph_dropper_detection_ru.sql
+// ==============================================================================
 
 -- 1. Relational Tables Definition (Underlying Schema with Co-location Interleaving)
 CREATE TABLE Customers (
