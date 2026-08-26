@@ -5,39 +5,39 @@
 // ==============================================================================
 
 
-// Google Cloud Functions (Node.js) үшін index.js
+// index.js для Google Cloud Functions (Node.js)
 const fetch = require('node-fetch');
 const { Firestore } = require('@google-cloud/firestore');
 const db = new Firestore();
 
-const SGTM_URL = 'https://sgtm.yourdomain.kz/kaspi-webhook'; // Сіздің Server-Side GTM URL-іңіз
+const SGTM_URL = 'https://sgtm.yourdomain.kz/kaspi-webhook'; // URL вашего Server-Side GTM
 
 exports.handleKaspiWebhook = async (req, res) => {
   try {
-    // 1. Kaspi-ден келген вебхук қолтаңбасын тексереміз (Security First!)
+    // 1. Проверяем подпись вебхука от Kaspi (Security First!)
     if (!verifyKaspiSignature(req)) {
       return res.status(403).send('Forbidden');
     }
 
     const { order_id, status, amount } = req.body;
 
-    // 2. Тек сәтті төлемдерді ғана өңдейміз
+    // 2. Обрабатываем только успешные оплаты
     if (status !== 'PAID') {
       return res.status(200).send('OK');
     }
 
-    // 3. Тапсырысты дерекқордан аламыз
+    // 3. Достаем заказ из базы данных
     const orderDoc = await db.collection('orders').doc(order_id).get();
     if (!orderDoc.exists) return res.status(404).send('Order not found');
     
     const orderData = orderDoc.data();
 
-    // 4. Қайталанудан қорғаныс (purchase екі рет кетіп қалмауы үшін)
+    // 4. Защита от дублей (чтобы не отправить purchase дважды)
     if (orderData.ga_purchase_sent) {
        return res.status(200).send('Already processed');
     }
 
-    // 5. sGTM үшін Payload қалыптастырамыз
+    // 5. Формируем Payload для sGTM
     const sgtmPayload = {
       event_name: 'purchase',
       client_id: orderData.ga_client_id,
@@ -45,17 +45,17 @@ exports.handleKaspiWebhook = async (req, res) => {
       transaction_id: order_id,
       value: amount,
       currency: 'KZT',
-      items: orderData.items // GA4 e-commerce стандарты бойынша тауарлар массиві
+      items: orderData.items // Массив товаров по стандарту GA4 e-commerce
     };
 
-    // 6. sGTM-ге жібереміз
+    // 6. Отправляем в sGTM
     await fetch(SGTM_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(sgtmPayload)
     });
 
-    // 7. Қайталануларды болдырмау үшін тапсырысқа белгі қоямыз
+    // 7. Помечаем заказ, чтобы избежать дублей
     await db.collection('orders').doc(order_id).update({ ga_purchase_sent: true });
 
     res.status(200).send('Success');
