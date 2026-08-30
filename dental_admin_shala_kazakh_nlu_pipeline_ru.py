@@ -1,6 +1,6 @@
 # ==============================================================================
 # FastAPI & Gemini 2.5 Flash Dental Shala-Kazakh NLU Pipeline (RU)
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/dental_admin_shala_kazakh_nlu_pipeline_ru.py
 # ==============================================================================
 
