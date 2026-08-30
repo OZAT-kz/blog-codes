@@ -1,11 +1,10 @@
 // ==============================================================================
-// sync-bigquery-firebase-claims.ts
+// Paywall или AdSense? Как мы динамически скрывали рекламу от «китов» с помощью Firebase и Google Analytics
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/sync-bigquery-firebase-claims.ts
 // ==============================================================================
 
-
-// Cloud Function: BigQuery -> Firebase Auth синхрондау
+// Cloud Function: Синхронизация BigQuery -> Firebase Auth
 import * as admin from 'firebase-admin';
 import { BigQuery } from '@google-cloud/bigquery';
 
@@ -16,8 +15,8 @@ exports.syncWhalesToAuth = functions.pubsub.schedule('every 24 hours').onRun(asy
     const [rows] = await bq.query(query);
 
     for (const row of rows) {
-        // Custom Claim 'is_whale' = true орнатамыз
+        // Устанавливаем Custom Claim 'is_whale' = true
         await admin.auth().setCustomUserClaims(row.user_id, { is_whale: true });
     }
-    console.log(`${rows.length} кит синхрондалды.`);
+    console.log(`Синхронизировано ${rows.length} китов.`);
 });
