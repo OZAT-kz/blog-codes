@@ -1,6 +1,6 @@
 # ==============================================================================
 # Google Cloud Media CDN Origin Shielding & Dual-Token Anti-Piracy Manager (KZ)
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/media_cdn_edge_cache_and_dual_token_kz.py
 # ==============================================================================
 
