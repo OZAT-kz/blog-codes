@@ -1,13 +1,12 @@
 // ==============================================================================
-// react-ad-unit.js
+// AdSense убивает ваш Core Web Vitals? Как мы ускорили загрузку рекламы в 3 раза, перенеся SSR на Google Cloud Run
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/react-ad-unit.js
 // ==============================================================================
 
-
 const AdUnit = ({ slotId }) => {
   useEffect(() => {
-    // Скрипт жүктелгеннен кейін нақты блокты инициализациялау
+    // Инициализация конкретного блока после загрузки скрипта
     if (window.adsbygoogle && window.adsbygoogle.loaded) {
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
