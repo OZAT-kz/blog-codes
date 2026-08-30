@@ -1,63 +1,60 @@
 // ==============================================================================
-// Cloud Storage & Cloud Run Fabric Pipeline (KZ)
+// Қалдықсыз пішу: Алматыдағы 12 тігіншісі бар шеберхана Gemini 2.5 Flash (Vision) және Cloud Storage арқылы матадан 800 000 ₸ қалай үнемдейді
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/cloudStorageFabricPipeline_kz.ts
 // ==============================================================================
 
 import { Storage } from '@google-cloud/storage';
 import { PubSub } from '@google-cloud/pubsub';
-import { analyzeFabricSurface, DefectScanResult } from './geminiFabricDefectVision_kz';
+import { analyzeFabricSurface, DefectScanResult } from './geminiFabricDefectVision';
 
 const storage = new Storage();
 const pubsub = new PubSub();
 
-const BUCKET_NAME = process.env.FABRIC_PHOTOS_BUCKET || 'almaty-garment-fabric-scans-prod';
-const NOTIFICATION_TOPIC = process.env.DEFECT_EVENTS_TOPIC || 'fabric-defect-detected-topic';
+const FABRIC_BUCKET_NAME = process.env.FABRIC_IMAGES_BUCKET || 'ozat-almaty-sewing-fabrics-prod';
+const NOTIFICATION_TOPIC = 'projects/ozat-almaty-sewing/topics/fabric-frame-uploaded';
 
 /**
- * Пішу үстелінің камерасынан 4K кадрды тікелей жүктеу үшін V4 Signed URL жасау
+ * Генерация V4 Signed URL для мгновенной загрузки 4K-снимка напрямую с промышленной камеры
  */
-export async function generateUploadUrl(rollId: string, cameraIndex: number): Promise<{ uploadUrl: string; gcsPath: string }> {
-  const timestamp = Date.now();
-  const fileName = `rolls/${rollId}/cam_${cameraIndex}_${timestamp}.jpg`;
-  const file = storage.bucket(BUCKET_NAME).file(fileName);
+export async function generateCameraUploadUrl(rollId: string, frameIndex: number): Promise<{ uploadUrl: string; gcsUri: string; fileKey: string }> {
+  const fileKey = `rolls/${rollId}/frame_${String(frameIndex).padStart(5, '0')}_${Date.now()}.jpg`;
+  const file = storage.bucket(FABRIC_BUCKET_NAME).file(fileKey);
 
   const [uploadUrl] = await file.getSignedUrl({
     version: 'v4',
     action: 'write',
-    expires: Date.now() + 5 * 60 * 1000, // 5 минут жарамдылық
-    contentType: 'image/jpeg'
+    expires: Date.now() + 10 * 60 * 1000, // 10 минут
+    contentType: 'image/jpeg',
   });
 
-  return {
-    uploadUrl,
-    gcsPath: `gs://${BUCKET_NAME}/${fileName}`
-  };
+  const gcsUri = `gs://${FABRIC_BUCKET_NAME}/${fileKey}`;
+  return { uploadUrl, gcsUri, fileKey };
 }
 
 /**
- * Cloud Storage жүктеу оқиғасын өңдегіш (Event-Driven Cloud Run Handler)
+ * Обработчик события финализации загрузки в Cloud Storage (Event-Driven Cloud Run Handler)
  */
 export async function handleGcsFabricUploadEvent(eventPayload: { bucket: string; name: string }): Promise<void> {
   const { bucket, name } = eventPayload;
-  console.log(`[GCS Event] Матаның жаңа 4K суреті: gs://${bucket}/${name}`);
+  console.log(`[GCS Event] Новый 4K-кадр полотна: gs://${bucket}/${name}`);
 
-  // Файл жолынан rollId бөліп алу
+  // Извлекаем rollId из пути файла
   const match = name.match(/^rolls\/([^\/]+)\//);
   const rollId = match ? match[1] : 'unknown_roll';
 
   const gcsUri = `gs://${bucket}/${name}`;
   
-  // Gemini 2.5 Flash Vision шақыру
+  // Вызов Gemini 2.5 Flash Vision
   const scanResult: DefectScanResult = await analyzeFabricSurface(gcsUri, {
     rollId,
     expectedColor: 'Navy Blue #1A243B',
     gsmWeight: 320
   });
 
-  console.log(`[Defect Engine] Сканерлеу нәтижесі ${name}: ${scanResult.defects.length} ақау. Грейд: ${scanResult.overallQualityGrade}`);
+  console.log(`[Defect Engine] Результат сканирования ${name}: ${scanResult.defects.length} дефектов. Grade: ${scanResult.overallQualityGrade}`);
 
-  // Координаттарды лекалоларды динамикалық орналастыру алгоритміне жіберу
+  // Отправка координат в алгоритм динамического нестинга лекал (Nesting Engine)
   const messageData = Buffer.from(JSON.stringify({
     gcsUri,
     rollId,
