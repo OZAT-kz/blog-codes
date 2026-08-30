@@ -1,8 +1,8 @@
-// ==============================================================================
-// bigquery_gis_drought_spatial_analysis_kz.sql
-// Source: OZAT Engineering Hub (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_drought_spatial_analysis_kz.sql
-// ==============================================================================
+-- ==============================================================================
+-- ЖИ 5 000 000 гектар бидайды құтқарады: Google Earth Engine және BigQuery GIS арқылы Қостанай мен Ақмоладағы құрғақшылықты ғарыштық бақылау
+-- Source: OZAT Engineering Hub (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_drought_spatial_analysis_kz.sql
+-- ==============================================================================
 
 WITH CadastralFields AS (
   SELECT 
