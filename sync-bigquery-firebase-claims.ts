@@ -4,7 +4,6 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/sync-bigquery-firebase-claims.ts
 // ==============================================================================
 
-// Cloud Function: Синхронизация BigQuery -> Firebase Auth
 import * as admin from 'firebase-admin';
 import { BigQuery } from '@google-cloud/bigquery';
 
