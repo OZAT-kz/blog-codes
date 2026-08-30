@@ -1,5 +1,5 @@
 // ==============================================================================
-// ESP32 MQTT TLS 1.3 Telemetry with GTS Root CA, NTP and NVS Buffering (KZ)
+// Қазыны қауіпсіз баптау: ESP32, Cloud Run MQTT және Vertex AI арқылы ет пен ірімшік пісіп-жетілуін IoT-мониторингтеу
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/esp32_curing_chamber_mqtt_kz.ino
 // ==============================================================================
