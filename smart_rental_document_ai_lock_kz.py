@@ -1,6 +1,6 @@
 # ==============================================================================
 # smart_rental_document_ai_lock_kz.py
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/smart_rental_document_ai_lock_kz.py
 # ==============================================================================
 
