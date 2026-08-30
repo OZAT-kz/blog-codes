@@ -1,6 +1,6 @@
 // ==============================================================================
 // spanner_ecommerce_schema_kz.sql
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_ecommerce_schema_kz.sql
 // ==============================================================================
 
