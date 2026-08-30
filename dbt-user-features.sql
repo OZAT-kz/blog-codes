@@ -4,7 +4,6 @@
 -- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/dbt-user-features.sql
 -- ==============================================================================
 
--- dbt модель для агрегации фичей пользователя
 SELECT 
   user_pseudo_id AS client_id,
   COUNT(event_name) AS total_events,
