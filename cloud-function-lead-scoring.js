@@ -4,7 +4,6 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/cloud-function-lead-scoring.js
 // ==============================================================================
 
-// Фрагмент Cloud Function для скоринга лида
 const { aiplatform } = require(\'@google-cloud/aiplatform\');
 const { BigQuery } = require(\'@google-cloud/bigquery\');
 
