@@ -1,6 +1,6 @@
 # ==============================================================================
 # earth_engine_crop_ndvi_pipeline_ru.py
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/earth_engine_crop_ndvi_pipeline_ru.py
 # ==============================================================================
 
