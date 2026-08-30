@@ -1,5 +1,5 @@
 // ==============================================================================
-// coffeeKdsFirebaseSync_ru.ts
+// Кофе за 40 секунд или бесплатно: Оптимизация пиковых очередей в БЦ Астаны через Firebase Realtime Database и Gemini Live Audio
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/coffeeKdsFirebaseSync_ru.ts
 // ==============================================================================
@@ -63,7 +63,7 @@ export class CoffeeKDSManager {
 
   // Реактивная подписка экрана KDS с сортировкой по FIFO
   subscribeQueue(onUpdate: (tickets: KDSTicket[]) => void): () => void {
-    return onValue(this.queueRef, (snapshot) => {
+    return get(this.queueRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) {
         onUpdate([]);
