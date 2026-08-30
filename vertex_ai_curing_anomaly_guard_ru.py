@@ -1,5 +1,5 @@
 # ==============================================================================
-# FastAPI + Vertex AI Prediction with dT/dt & dRH/dt Derivatives Calculation (RU)
+# Казы без риска: IoT-мониторинг созревания мяса и сыра на ESP32 с Cloud Run MQTT и Vertex AI Time-Series Detection
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/vertex_ai_curing_anomaly_guard_ru.py
 # ==============================================================================
