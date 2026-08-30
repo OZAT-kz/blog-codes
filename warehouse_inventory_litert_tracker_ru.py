@@ -17,13 +17,11 @@ try:
 except ImportError:
     import tflite_runtime.interpreter as litert
 
-
 class TrackState(Enum):
     TENTATIVE = "TENTATIVE"    # Initial detection phase (< 3 consecutive hits)
     CONFIRMED = "CONFIRMED"    # Confirmed object (>= 3 hits), counter incremented
     LOST = "LOST"              # Temporarily occluded / out-of-frame (kept up to 25 frames)
     DELETED = "DELETED"        # Expired track, cleaned from memory
-
 
 @dataclass
 class BoundingBox:
@@ -38,7 +36,6 @@ class BoundingBox:
     def centroid(self) -> Tuple[float, float]:
         """Calculates centroid C_k = ((xmin + xmax)/2, (ymin + ymax)/2) in pixel space."""
         return ((self.xmin + self.xmax) / 2.0, (self.ymin + self.ymax) / 2.0)
-
 
 @dataclass
 class Track:
@@ -77,7 +74,6 @@ class Track:
 
         if self.state == TrackState.TENTATIVE and self.hits >= 3:
             self.state = TrackState.CONFIRMED
-
 
 class LiteRTBoxDetector:
     """LiteRT INT8 Object Detector with Hardware Acceleration Delegate."""
@@ -128,7 +124,6 @@ class LiteRTBoxDetector:
                     class_id=int(classes[i])
                 ))
         return detected_boxes
-
 
 class WarehouseCentroidTracker:
     """Anti-Double Counting Centroid Tracker with State Machine & Dynamic Gating."""
