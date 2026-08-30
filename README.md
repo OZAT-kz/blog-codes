@@ -42,7 +42,7 @@ We build software and infrastructure engineered for measurable business ROI, ris
 - **Observability & SRE**: Distributed tracing, automated alerting, log management (Cloud Logging / Prometheus / Grafana).
 
 ### 2. 🧠 Applied Generative AI & Intelligent Systems
-- **LLM Solutions**: Custom business workflows using **Google Gemini 1.5/2.0**, Vertex AI, and OpenAI.
+- **LLM Solutions**: Custom business workflows using **Google Gemini 2.5/3.7**, Vertex AI, and OpenAI.
 - **Enterprise RAG (Retrieval-Augmented Generation)**: Grounded internal knowledge retrieval with vector embeddings and Firestore / Vertex Search.
 - **Autonomous AI Agents**: Multi-agent task orchestration, dynamic function calling, tool use, and automated decision flows.
 - **AI Readiness Auditing**: Comprehensive analysis of enterprise workflows for high-ROI automation candidates.
@@ -90,7 +90,7 @@ Our engineering knowledge base is divided into three production-ready open hubs:
 
 ## 🎓 OZAT Academy & Open Knowledge Base
 
-We believe in engineering transparency and knowledge empowerment. Through the **[OZAT Knowledge Hub](https://ozat.kz/blog)**, we publish:
+We believe in engineering transparency and knowledge empowerment. Through the **[OZAT Engineering Hub](https://ozat.kz/blog)**, we publish:
 - **In-Depth Case Studies**: Real-world breakdowns of cloud migrations, performance rescue missions, and AI agent deployments.
 - **Architectural Blueprints**: Step-by-step guides for designing multi-tenant serverless backends and vector search pipelines.
 - **Interactive Calculators**: Open tools like [Scope Builder](https://ozat.kz/scope-builder) to calculate timelines, infrastructure tiers, and project cost estimates.
