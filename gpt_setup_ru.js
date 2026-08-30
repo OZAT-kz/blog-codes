@@ -1,5 +1,5 @@
 // ==============================================================================
-// gpt_setup_ru.js
+// AdSense в Казахстане приносит копейки? Как мы сделали x3 к RPM, скормив GA4 Predictive Audiences в Google Ad Manager
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/gpt_setup_ru.js
 // ==============================================================================
