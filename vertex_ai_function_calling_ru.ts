@@ -1,9 +1,8 @@
 // ==============================================================================
-// vertex_ai_function_calling_ru.ts
+// «Сен кімсің?»: Как мы подключили Vertex AI к WhatsApp и научили ЦОН-бота понимать шала-казахский
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/vertex_ai_function_calling_ru.ts
 // ==============================================================================
-
 
 import { GoogleGenAI, Type } from '@google/genai';
 
