@@ -1,6 +1,6 @@
 # ==============================================================================
 # Google Distributed Cloud (GDC) Edge AI Vision Daemon & TensorRT Pipeline (RU)
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/gdc_edge_video_pipeline_daemon_ru.py
 # ==============================================================================
 
