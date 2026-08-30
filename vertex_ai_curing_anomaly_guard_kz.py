@@ -1,5 +1,5 @@
 # ==============================================================================
-# FastAPI + Vertex AI Prediction with dT/dt & dRH/dt Derivatives Calculation (KZ)
+# Қазыны қауіпсіз баптау: ESP32, Cloud Run MQTT және Vertex AI арқылы ет пен ірімшік пісіп-жетілуін IoT-мониторингтеу
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/vertex_ai_curing_anomaly_guard_kz.py
 # ==============================================================================
