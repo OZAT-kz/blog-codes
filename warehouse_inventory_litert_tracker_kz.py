@@ -1,6 +1,6 @@
 # ==============================================================================
 # Бір үзіліс кезіндегі түгендеу: Смартфон, Vertex AI Edge (LiteRT / TFLite) және Cloud Firestore арқылы 5 000 қорапты қалай санаймыз
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/warehouse_inventory_litert_tracker_kz.py
 # ==============================================================================
 
