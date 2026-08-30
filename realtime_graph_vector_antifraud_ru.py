@@ -1,5 +1,5 @@
 # ==============================================================================
-# realtime_graph_vector_antifraud_ru.py
+# Охота на дропперов: Как казахстанский финтех выявляет графы мошеннических транзакций за 4 мс с помощью Cloud Spanner Graph и Vertex AI Vector Search
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/realtime_graph_vector_antifraud_ru.py
 # ==============================================================================
