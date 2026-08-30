@@ -4,19 +4,7 @@
 -- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/ga4_propensity_score_ru.sql
 -- ==============================================================================
 
--- Расчет кастомного индекса вовлеченности (Propensity Score) в BigQuery
--- Анализируем сырые логи GA4 для выявления Premium-пользователей
-WITH UserActivity AS (
-  SELECT
-    user_pseudo_id,
-    COUNT(DISTINCT event_date) AS active_days,
-    SUM(CASE WHEN event_name = 'scroll' THEN 1 ELSE 0 END) AS deep_scrolls,
-    SUM(CASE WHEN event_name = 'session_start' THEN 1 ELSE 0 END) AS total_sessions,
-    -- Считаем общее время на сайте (в минутах)
-    SUM(engagement_time_msec) / 60000 AS total_engagement_minutes
-  FROM
-    `ozat-kz-analytics.analytics_123456789.events_*`
-  WHERE
+WHERE
     _TABLE_SUFFIX BETWEEN FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)) 
                       AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
   GROUP BY
