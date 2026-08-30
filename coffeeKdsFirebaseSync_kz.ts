@@ -1,6 +1,6 @@
 // ==============================================================================
 // coffeeKdsFirebaseSync_kz.ts
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/coffeeKdsFirebaseSync_kz.ts
 // ==============================================================================
 
