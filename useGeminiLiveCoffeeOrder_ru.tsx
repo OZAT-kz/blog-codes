@@ -1,5 +1,5 @@
 // ==============================================================================
-// useGeminiLiveCoffeeOrder_ru.tsx
+// Кофе за 40 секунд или бесплатно: Оптимизация пиковых очередей в БЦ Астаны через Firebase Realtime Database и Gemini Live Audio
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/useGeminiLiveCoffeeOrder_ru.tsx
 // ==============================================================================
