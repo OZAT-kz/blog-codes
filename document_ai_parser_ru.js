@@ -1,5 +1,5 @@
 // ==============================================================================
-// document_ai_parser_ru.js
+// Скармливаем казахскую первичку в Document AI: Как мы автоматизировали ад бухгалтера
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/document_ai_parser_ru.js
 // ==============================================================================
