@@ -1,5 +1,5 @@
 // ==============================================================================
-// ESP32 MQTT TLS 1.3 Telemetry with GTS Root CA, NTP and NVS Buffering (RU)
+// Казы без риска: IoT-мониторинг созревания мяса и сыра на ESP32 с Cloud Run MQTT и Vertex AI Time-Series Detection
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/esp32_curing_chamber_mqtt_ru.ino
 // ==============================================================================
