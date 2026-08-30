@@ -1,8 +1,8 @@
-// ==============================================================================
-// spanner_graph_dropper_detection_kz.sql
-// Source: OZAT Engineering Hub (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_graph_dropper_detection_kz.sql
-// ==============================================================================
+-- ==============================================================================
+-- Дропперлерді аулау: Қазақстандық финтех Cloud Spanner Graph және Vertex AI Vector Search көмегімен алаяқтық транзакциялар графтарын 4 мс ішінде қалай анықтайды
+-- Source: OZAT Engineering Hub (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_graph_dropper_detection_kz.sql
+-- ==============================================================================
 
 -- 1. Relational Tables Definition (Underlying Schema with Co-location Interleaving)
 CREATE TABLE Customers (
