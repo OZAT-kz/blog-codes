@@ -1,8 +1,8 @@
-// ==============================================================================
-// bigquery_gis_logistics_kz.sql
-// Source: OZAT Engineering Hub (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_logistics_kz.sql
-// ==============================================================================
+-- ==============================================================================
+-- Біз ауа тасуды қалай доғардық: BigQuery GIS арқылы Алматы бойынша жеткізуді бағыттау
+-- Source: OZAT Engineering Hub (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery_gis_logistics_kz.sql
+-- ==============================================================================
 
 WITH ValidDeliveries AS (
   SELECT
