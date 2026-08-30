@@ -1,5 +1,5 @@
 # ==============================================================================
-# realtime_graph_vector_antifraud_kz.py
+# Дропперлерді аулау: Қазақстандық финтех Cloud Spanner Graph және Vertex AI Vector Search көмегімен алаяқтық транзакциялар графтарын 4 мс ішінде қалай анықтайды
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/realtime_graph_vector_antifraud_kz.py
 # ==============================================================================
