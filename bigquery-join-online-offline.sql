@@ -1,12 +1,11 @@
-// ==============================================================================
-// bigquery-join-online-offline.sql
-// Source: OZAT Engineering Hub (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery-join-online-offline.sql
-// ==============================================================================
-
+-- ==============================================================================
+-- O2O (Offline-to-Online) аналитика: Как связать клики из Google Ads с реальными визитами в точки продаж в Алматы через BigQuery
+-- Source: OZAT Engineering Hub (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery-join-online-offline.sql
+-- ==============================================================================
 
 WITH online_sessions AS (
-  -- Юзер логин жасаған Google Ads сессияларын аламыз (user_id бар)
+  -- Достаем сессии с Google Ads, где юзер залогинился (есть user_id)
   SELECT 
     user_id AS hashed_phone,
     CONCAT(user_pseudo_id, (SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'ga_session_id')) AS session_id,
@@ -22,7 +21,7 @@ WITH online_sessions AS (
 ),
 
 offline_transactions AS (
-  -- Біздің офлайн транзакцияларымызды аламыз
+  -- Достаем наши офлайн транзакции
   SELECT 
     transaction_id,
     hashed_phone,
@@ -32,7 +31,7 @@ offline_transactions AS (
     `your-project.crm_data.offline_sales`
 )
 
--- Желімдейміз!
+-- Склеиваем!
 SELECT 
   o.transaction_id,
   o.revenue,
@@ -44,11 +43,11 @@ FROM
 JOIN 
   online_sessions s ON o.hashed_phone = s.hashed_phone
 WHERE
-  -- Сатып алу сайтқа кіргеннен КЕЙІН болды
+  -- Покупка была ПОСЛЕ визита на сайт
   o.transaction_date > s.session_time
-  -- Атрибуция терезесі (мысалы, 7 күн)
+  -- Окно атрибуции (например, 7 дней)
   AND TIMESTAMP_DIFF(o.transaction_date, s.session_time, DAY) <= 7
   AND s.utm_source = 'google' 
   AND s.utm_medium = 'cpc'
--- Сатып алу алдындағы тек соңғы кликті аламыз (Last Non-Direct Click)
+-- Берем только последний клик перед покупкой (Last Non-Direct Click)
 QUALIFY ROW_NUMBER() OVER(PARTITION BY o.transaction_id ORDER BY s.session_time DESC) = 1;
