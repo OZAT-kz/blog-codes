@@ -4,7 +4,6 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/react-firebase-claims-provider.tsx
 // ==============================================================================
 
-// React: Проверка статуса пользователя
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, getIdTokenResult } from 'firebase/auth';
 
