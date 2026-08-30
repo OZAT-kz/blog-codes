@@ -1,5 +1,5 @@
 # ==============================================================================
-# smart_rental_document_ai_lock_ru.py
+# Умный замок и верификация документов: Автоматизация заселения в апартаменты с Document AI, Cloud KMS и TTLock
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/smart_rental_document_ai_lock_ru.py
 # ==============================================================================
