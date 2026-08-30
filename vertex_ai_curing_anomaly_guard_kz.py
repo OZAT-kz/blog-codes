@@ -1,6 +1,6 @@
 # ==============================================================================
 # FastAPI + Vertex AI Prediction with dT/dt & dRH/dt Derivatives Calculation (KZ)
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/vertex_ai_curing_anomaly_guard_kz.py
 # ==============================================================================
 
