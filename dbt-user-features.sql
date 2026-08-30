@@ -1,11 +1,10 @@
-// ==============================================================================
-// dbt-user-features.sql
-// Source: OZAT Engineering Hub (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/dbt-user-features.sql
-// ==============================================================================
+-- ==============================================================================
+-- Скоринг лидов из Google Ads для застройщиков Астаны: Отсеиваем фрод в реальном времени через Vertex AI и BigQuery
+-- Source: OZAT Engineering Hub (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/dbt-user-features.sql
+-- ==============================================================================
 
-
--- Пайдаланушы фичаларын агрегациялауға арналған dbt моделі
+-- dbt модель для агрегации фичей пользователя
 SELECT 
   user_pseudo_id AS client_id,
   COUNT(event_name) AS total_events,
