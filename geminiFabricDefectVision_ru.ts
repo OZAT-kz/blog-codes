@@ -1,6 +1,6 @@
 // ==============================================================================
 // Gemini 2.5 Flash Fabric Vision Detection (RU)
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/geminiFabricDefectVision_ru.ts
 // ==============================================================================
 
