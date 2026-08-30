@@ -4,13 +4,7 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/gpt_setup_kz.js
 // ==============================================================================
 
-// Custom таргетингі бар Google Publisher Tag (GPT) инициализациясы
-window.googletag = window.googletag || {cmd: []};
-
-googletag.cmd.push(function() {
-  // Жарнама слотын анықтаймыз (мысалы, шапкадағы Billboard 970x250)
-  var adSlot = googletag.defineSlot('/1234567/ozat_premium_billboard', [[970, 250], [728, 90]], 'div-gpt-ad-1234567-0')
-      .addService(googletag.pubads());
+.addService(googletag.pubads());
 
   // DataLayer-ден пайдаланушы деректерін оқимыз (GA4-пен синхрондалған)
   // Нақты жобада бұл жалауша сіздің CDP-ден немесе Google Audience API арқылы келуі мүмкін
