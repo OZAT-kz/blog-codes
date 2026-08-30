@@ -1,5 +1,5 @@
 # ==============================================================================
-# almaty_detailing_vision_guard_ru.py
+# «Брат, через 15 минут заедешь»: Как детейлинг в Алматы победил воровство автохимии и левые заезды с помощью Cloud Video Intelligence и Telegram-бота
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/almaty_detailing_vision_guard_ru.py
 # ==============================================================================
