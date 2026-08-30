@@ -4,7 +4,6 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/prevent-cls-ads.css
 // ==============================================================================
 
-/* CSS для предотвращения CLS */
 .ad-container {
   min-height: 250px; /* Резервируем место */
   width: 100%;
