@@ -1,6 +1,6 @@
 // ==============================================================================
 // cloud-function-lead-scoring.js
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/cloud-function-lead-scoring.js
 // ==============================================================================
 
