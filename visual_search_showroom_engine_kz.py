@@ -1,6 +1,6 @@
 # ==============================================================================
 # Google Cloud Vision Product Search & Vertex AI Visual Search Engine (KZ)
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/visual_search_showroom_engine_kz.py
 # ==============================================================================
 
