@@ -1,6 +1,6 @@
 # ==============================================================================
 # almaty_detailing_vision_guard_ru.py
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/almaty_detailing_vision_guard_ru.py
 # ==============================================================================
 
