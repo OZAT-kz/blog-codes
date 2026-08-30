@@ -1,6 +1,6 @@
 # ==============================================================================
 # Kaspi Marketplace Repricer & WhatsApp AI Support Daemon (KZ)
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/kaspi_repricer_and_whatsapp_ai_daemon_kz.py
 # ==============================================================================
 
