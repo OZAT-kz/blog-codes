@@ -1,6 +1,6 @@
 // ==============================================================================
 // Анти-пробки для доставки цветов и еды: Google Maps Routes API (TSP-оптимизация) против грабительских комиссий курьерских агрегаторов
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/google-maps-routes-tsp-delivery-optimizer.ts
 // ==============================================================================
 
