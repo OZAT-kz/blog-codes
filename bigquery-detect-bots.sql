@@ -4,7 +4,6 @@
 -- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/bigquery-detect-bots.sql
 -- ==============================================================================
 
--- Пример SQL-запроса для выявления бот-сессий в BigQuery
 WITH session_stats AS (
   SELECT
     user_pseudo_id,
