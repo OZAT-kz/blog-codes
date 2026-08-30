@@ -1,5 +1,5 @@
 // ==============================================================================
-// document_ai_parser_kz.js
+// Қазақстандық құжаттарды Document AI-ға береміз: Бухгалтердің тозағын қалай автоматтандырдық
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/document_ai_parser_kz.js
 // ==============================================================================
