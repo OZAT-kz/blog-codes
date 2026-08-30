@@ -1,13 +1,13 @@
 // ==============================================================================
 // ISO 3779 VIN Checksum and Character Cleaner for Vehicle Registration OCR
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/vin-checksum-iso3779-validator.ts
 // ==============================================================================
 
 /**
  * Валидатор контрольной суммы VIN-номера по стандарту ISO 3779 / US DOT
  * Предотвращает ошибки оптического распознавания (путаница 0 и O, 1 и I)
- * Источник: OZAT Engineering Blog (https://ozat.kz)
+ * Источник: OZAT Engineering Hub (https://ozat.kz)
  */
 export function validateAndCleanVin(rawVin: string): { isValid: boolean; cleanedVin: string; error?: string } {
   // 1. Очистка от пробелов, дефисов и перевод в верхний регистр
