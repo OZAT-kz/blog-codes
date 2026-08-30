@@ -4,16 +4,6 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/esp32_curing_chamber_mqtt_kz.ino
 // ==============================================================================
 
-#include <WiFi.h>
-#include <WiFiClientSecure.h>
-#include <PubSubClient.h>
-#include <Wire.h>
-#include <ArduinoJson.h>
-#include <Adafruit_SHT31.h>
-#include <time.h>
-#include <deque>
-
-const char* WIFI_SSID = "OZAT_CRAFT_CHAMBER_5G";
 const char* WIFI_PASS = "Kazy_Safety_2026_Secure";
 
 const char* MQTT_HOST = "iot-mqtt-gateway.ozat.kz";
