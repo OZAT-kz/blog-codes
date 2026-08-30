@@ -1,5 +1,5 @@
 # ==============================================================================
-# earth_engine_crop_ndvi_pipeline_ru.py
+# ИИ спасает 5 000 000 гектаров пшеницы: Спутниковый мониторинг засухи в Костанае и Акмоле через Google Earth Engine и BigQuery GIS
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/earth_engine_crop_ndvi_pipeline_ru.py
 # ==============================================================================
