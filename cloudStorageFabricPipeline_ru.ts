@@ -1,38 +1,35 @@
 // ==============================================================================
-// Cloud Storage & Cloud Run Fabric Pipeline (RU)
+// Раскрой без брака: Как швейный цех на 12 швей в Алматы экономит 800 000 ₸ на ткани с помощью Gemini 2.5 Flash (Vision) и Cloud Storage
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/cloudStorageFabricPipeline_ru.ts
 // ==============================================================================
 
 import { Storage } from '@google-cloud/storage';
 import { PubSub } from '@google-cloud/pubsub';
-import { analyzeFabricSurface, DefectScanResult } from './geminiFabricDefectVision_ru';
+import { analyzeFabricSurface, DefectScanResult } from './geminiFabricDefectVision';
 
 const storage = new Storage();
 const pubsub = new PubSub();
 
-const BUCKET_NAME = process.env.FABRIC_PHOTOS_BUCKET || 'almaty-garment-fabric-scans-prod';
-const NOTIFICATION_TOPIC = process.env.DEFECT_EVENTS_TOPIC || 'fabric-defect-detected-topic';
+const FABRIC_BUCKET_NAME = process.env.FABRIC_IMAGES_BUCKET || 'ozat-almaty-sewing-fabrics-prod';
+const NOTIFICATION_TOPIC = 'projects/ozat-almaty-sewing/topics/fabric-frame-uploaded';
 
 /**
- * Генерация V4 Signed URL для прямой скоростной загрузки 4K-снимка с камеры раскройного стола
+ * Генерация V4 Signed URL для мгновенной загрузки 4K-снимка напрямую с промышленной камеры
  */
-export async function generateUploadUrl(rollId: string, cameraIndex: number): Promise<{ uploadUrl: string; gcsPath: string }> {
-  const timestamp = Date.now();
-  const fileName = `rolls/${rollId}/cam_${cameraIndex}_${timestamp}.jpg`;
-  const file = storage.bucket(BUCKET_NAME).file(fileName);
+export async function generateCameraUploadUrl(rollId: string, frameIndex: number): Promise<{ uploadUrl: string; gcsUri: string; fileKey: string }> {
+  const fileKey = `rolls/${rollId}/frame_${String(frameIndex).padStart(5, '0')}_${Date.now()}.jpg`;
+  const file = storage.bucket(FABRIC_BUCKET_NAME).file(fileKey);
 
   const [uploadUrl] = await file.getSignedUrl({
     version: 'v4',
     action: 'write',
-    expires: Date.now() + 5 * 60 * 1000, // 5 минут валидности
-    contentType: 'image/jpeg'
+    expires: Date.now() + 10 * 60 * 1000, // 10 минут
+    contentType: 'image/jpeg',
   });
 
-  return {
-    uploadUrl,
-    gcsPath: `gs://${BUCKET_NAME}/${fileName}`
-  };
+  const gcsUri = `gs://${FABRIC_BUCKET_NAME}/${fileKey}`;
+  return { uploadUrl, gcsUri, fileKey };
 }
 
 /**
