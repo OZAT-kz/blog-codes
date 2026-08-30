@@ -1,8 +1,8 @@
-// ==============================================================================
-// spanner_ecommerce_schema_ru.sql
-// Source: OZAT Engineering Hub (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_ecommerce_schema_ru.sql
-// ==============================================================================
+-- ==============================================================================
+-- Kaspi Жұма без даунсекунд: Как мы пережили х50 трафика на e-commerce, переехав на GKE и Cloud Spanner
+-- Source: OZAT Engineering Hub (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_ecommerce_schema_ru.sql
+-- ==============================================================================
 
 BEGIN TRANSACTION;
 SELECT available_stock FROM inventory WHERE sku_id = 'SAMSUNG-OLED-65' FOR UPDATE;
