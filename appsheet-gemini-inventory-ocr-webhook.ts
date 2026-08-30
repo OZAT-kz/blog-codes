@@ -1,6 +1,6 @@
 // ==============================================================================
 // Market Inventory AI Auditor: Gemini 2.5 Flash OCR Webhook for AppSheet & Firestore
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/appsheet-gemini-inventory-ocr-webhook.ts
 // ==============================================================================
 
