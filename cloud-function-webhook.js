@@ -4,7 +4,6 @@
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/cloud-function-webhook.js
 // ==============================================================================
 
-// index.js для Google Cloud Functions (Node.js)
 const fetch = require('node-fetch');
 const { Firestore } = require('@google-cloud/firestore');
 const db = new Firestore();
