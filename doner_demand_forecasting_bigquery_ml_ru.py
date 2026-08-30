@@ -1,6 +1,6 @@
 # ==============================================================================
 # Almaty Doner Fast Food BigQuery ML ARIMA+ Demand Forecaster (RU)
-# Source: OZAT Engineering Blog (https://ozat.kz)
+# Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/doner_demand_forecasting_bigquery_ml_ru.py
 # ==============================================================================
 
