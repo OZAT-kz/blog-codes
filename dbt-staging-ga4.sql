@@ -1,11 +1,10 @@
-// ==============================================================================
-// dbt-staging-ga4.sql
-// Source: OZAT Engineering Hub (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/dbt-staging-ga4.sql
-// ==============================================================================
+-- ==============================================================================
+-- Looker Studio тормозит, а счет за BigQuery пугает финдиректора? Архитектура идеального дашборда для CMO
+-- Source: OZAT Engineering Hub (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/dbt-staging-ga4.sql
+-- ==============================================================================
 
-
--- GA4 параметрлерін алуға арналған dbt-моделінің мысалы (Staging)
+-- Пример dbt-модели для извлечения параметров GA4 (Staging)
 SELECT
   event_date,
   event_timestamp,
