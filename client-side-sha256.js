@@ -1,11 +1,10 @@
 // ==============================================================================
-// client-side-sha256.js
+// O2O (Offline-to-Online) аналитика: Как связать клики из Google Ads с реальными визитами в точки продаж в Алматы через BigQuery
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/client-side-sha256.js
 // ==============================================================================
 
-
-// Клиентте хэштеу мысалы (бірақ бэкендте жасаған дұрыс)
+// Пример хэширования на клиенте (хотя лучше делать на бэкенде)
 async function sha256(message) {
     const msgBuffer = new TextEncoder().encode(message);                    
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -14,11 +13,11 @@ async function sha256(message) {
     return hashHex;
 }
 
-// Сәтті авторизация кезінде
-const rawPhone = '+77011234567'; // Формадан алынған телефон
+// При успешной авторизации
+const rawPhone = '+77011234567'; // Телефон из формы
 sha256(rawPhone).then(hashedPhone => {
     gtag('config', 'G-XXXXXXX', {
-      'user_id': hashedPhone // Енді бұл анонимді хэш
+      'user_id': hashedPhone // Теперь это анонимный хэш
     });
     gtag('event', 'login', { method: 'phone' });
 });
