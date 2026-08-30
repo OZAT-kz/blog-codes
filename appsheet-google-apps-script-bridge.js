@@ -1,12 +1,12 @@
 // ==============================================================================
 // Google Apps Script Bridge: AppSheet Camera Scan to Cloud Run AI Webhook
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/appsheet-google-apps-script-bridge.js
 // ==============================================================================
 
 /**
  * Google Apps Script Webhook Bridge для мгновенной синхронизации AppSheet с Gemini Cloud Run
- * Источник: OZAT Engineering Blog (https://ozat.kz)
+ * Источник: OZAT Engineering Hub (https://ozat.kz)
  */
 function onAppSheetScanTrigger(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Inventory_Log");
