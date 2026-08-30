@@ -1,6 +1,6 @@
 // ==============================================================================
 // STO AI Auto Parts Matcher: Google Cloud Document AI + Gemini 2.5 Flash Vision Orchestrator
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/sto-vin-documentai-gemini-orchestrator.ts
 // ==============================================================================
 
