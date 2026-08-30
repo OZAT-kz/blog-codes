@@ -1,6 +1,6 @@
 // ==============================================================================
 // ESP32 MQTT TLS 1.3 Telemetry with GTS Root CA, NTP and NVS Buffering (RU)
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/esp32_curing_chamber_mqtt_ru.ino
 // ==============================================================================
 
