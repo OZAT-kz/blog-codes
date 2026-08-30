@@ -1,5 +1,5 @@
 # ==============================================================================
-# earth_engine_crop_ndvi_pipeline_kz.py
+# ЖИ 5 000 000 гектар бидайды құтқарады: Google Earth Engine және BigQuery GIS арқылы Қостанай мен Ақмоладағы құрғақшылықты ғарыштық бақылау
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/earth_engine_crop_ndvi_pipeline_kz.py
 # ==============================================================================
