@@ -1,27 +1,26 @@
 // ==============================================================================
-// react-firebase-claims-provider.tsx
+// Paywall или AdSense? Как мы динамически скрывали рекламу от «китов» с помощью Firebase и Google Analytics
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/react-firebase-claims-provider.tsx
 // ==============================================================================
 
-
-// React: Пайдаланушы статусын тексеру
+// React: Проверка статуса пользователя
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, getIdTokenResult } from 'firebase/auth';
 
 export const useAdStrategy = () => {
-    const [showAds, setShowAds] = useState<boolean | null>(null); // null = жүктелуде
+    const [showAds, setShowAds] = useState<boolean | null>(null); // null = загрузка
 
     useEffect(() => {
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // claims аламыз. Жылдамдық үшін ForceRefresh = false!
+                // Получаем claims. ForceRefresh = false для скорости!
                 const tokenResult = await getIdTokenResult(user, false);
                 const isWhale = tokenResult.claims.is_whale === true;
                 setShowAds(!isWhale);
             } else {
-                // Логин жасамағандарға - жарнаманы толықтай көрсетеміз
+                // Незалогиненным - показываем рекламу на всю катушку
                 setShowAds(true);
             }
         });
