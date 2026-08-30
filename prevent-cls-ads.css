@@ -1,16 +1,15 @@
 // ==============================================================================
-// prevent-cls-ads.css
+// AdSense убивает ваш Core Web Vitals? Как мы ускорили загрузку рекламы в 3 раза, перенеся SSR на Google Cloud Run
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/prevent-cls-ads.css
 // ==============================================================================
 
-
-/* CLS-ті болдырмауға арналған CSS */
+/* CSS для предотвращения CLS */
 .ad-container {
-  min-height: 250px; /* Орынды брондаймыз */
+  min-height: 250px; /* Резервируем место */
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f8f9fa; /* Баннер жүктелгенше плейсхолдер */
+  background-color: #f8f9fa; /* Плейсхолдер, пока баннер грузится */
 }
