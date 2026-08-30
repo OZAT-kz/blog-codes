@@ -1,5 +1,5 @@
 # ==============================================================================
-# almaty_detailing_vision_guard_kz.py
+# «Баурым, 15 минуттан кейін кіресің»: Алматыдағы детейлинг автохимия ұрлығы мен кассадан тыс жууды Cloud Video Intelligence және Telegram-бот арқылы қалай тоқтатты
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/almaty_detailing_vision_guard_kz.py
 # ==============================================================================
