@@ -1,5 +1,5 @@
 // ==============================================================================
-// useGeminiLiveCoffeeOrder_kz.tsx
+// Кофе 40 секундта немесе тегін: Firebase Realtime Database және Gemini Live Audio арқылы Астана БО-дағы кезектерді жою
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/useGeminiLiveCoffeeOrder_kz.tsx
 // ==============================================================================
