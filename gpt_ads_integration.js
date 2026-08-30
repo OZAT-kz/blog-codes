@@ -1,6 +1,6 @@
 // ==============================================================================
 // gpt_ads_integration.js
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/gpt_ads_integration.js
 // ==============================================================================
 
