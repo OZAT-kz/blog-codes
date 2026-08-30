@@ -1,5 +1,5 @@
 // ==============================================================================
-// gpt_setup_kz.js
+// Қазақстанда AdSense тиын әкеле ме? GA4 Predictive Audiences-ті Google Ad Manager-ге беріп, RPM-ді қалай 3 есе өсірдік
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/gpt_setup_kz.js
 // ==============================================================================
