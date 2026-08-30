@@ -1,6 +1,6 @@
 // ==============================================================================
 // gpt_setup_kz.js
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/gpt_setup_kz.js
 // ==============================================================================
 
