@@ -4,43 +4,7 @@
 -- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/spanner_graph_dropper_detection_kz.sql
 -- ==============================================================================
 
--- 1. Relational Tables Definition (Underlying Schema with Co-location Interleaving)
-CREATE TABLE Customers (
-    CustomerID STRING(64) NOT NULL,
-    IIN STRING(12) NOT NULL,
-    FullName STRING(128) NOT NULL,
-    RegistrationDate TIMESTAMP NOT NULL,
-    KycLevel STRING(16) NOT NULL,
-    RiskScore FLOAT64 NOT NULL,
-    IsFrozen BOOL NOT NULL,
-    CreatedAt TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true)
-) PRIMARY KEY (CustomerID);
-
-CREATE TABLE Accounts (
-    AccountID STRING(64) NOT NULL,
-    CustomerID STRING(64) NOT NULL,
-    IBAN STRING(34) NOT NULL,
-    AccountType STRING(16) NOT NULL, -- P2P, Salary, Merchant, CryptoTransit
-    Balance NUMERIC NOT NULL,
-    Status STRING(16) NOT NULL,
-    OpenedAt TIMESTAMP NOT NULL
-) PRIMARY KEY (CustomerID, AccountID),
-  INTERLEAVE IN PARENT Customers ON DELETE CASCADE;
-
-CREATE TABLE Devices (
-    DeviceID STRING(64) NOT NULL,
-    FingerprintHash STRING(128) NOT NULL,
-    OsVersion STRING(32) NOT NULL,
-    AppBuildNumber INT64 NOT NULL,
-    FirstSeenAt TIMESTAMP NOT NULL,
-    IsEmulated BOOL NOT NULL,
-    IsRooted BOOL NOT NULL
-) PRIMARY KEY (DeviceID);
-
-CREATE TABLE Transactions (
-    TransactionID STRING(64) NOT NULL,
-    SourceAccountID STRING(64) NOT NULL,
-    DestinationAccountID STRING(64) NOT NULL,
+DestinationAccountID STRING(64) NOT NULL,
     DeviceID STRING(64) NOT NULL,
     Amount NUMERIC NOT NULL,
     Currency STRING(3) NOT NULL,
