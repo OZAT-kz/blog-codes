@@ -1,86 +1,91 @@
 // ==============================================================================
-// Gemini 2.5 Flash Fabric Vision Detection (KZ)
+// Қалдықсыз пішу: Алматыдағы 12 тігіншісі бар шеберхана Gemini 2.5 Flash (Vision) және Cloud Storage арқылы матадан 800 000 ₸ қалай үнемдейді
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/geminiFabricDefectVision_kz.ts
 // ==============================================================================
 
 import { GoogleGenAI, Type, Schema } from '@google/genai';
 
-// Google GenAI SDK инициализациясы (Серверлік контур)
+// Инициализация Google GenAI SDK (Google Cloud Vertex AI / Gemini API)
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-/**
- * Мата ақауларын анықтауға арналған жауап сұлбасы
- */
+// Схема структурированного ответа для детекции тканевых дефектов
 const FabricDefectResponseSchema: Schema = {
   type: Type.OBJECT,
   properties: {
-    scanTimestamp: { type: Type.STRING, description: 'Талдаудың ISO 8601 уақыт белгісі' },
-    rollId: { type: Type.STRING, description: 'Мата орамының (рулон) идентификаторы' },
-    fabricType: { type: Type.STRING, description: 'Мата түрі (мысалы, 3 жіпті футер)' },
-    overallQualityGrade: { 
-      type: Type.STRING, 
-      enum: ['GRADE_A', 'GRADE_B', 'GRADE_REJECT'],
-      description: 'Матаның қорытынды сапа грейді'
-    },
-    defectsCount: { type: Type.INTEGER, description: 'Табылған ақаулардың жалпы саны' },
+    rollId: { type: Type.STRING, description: "Идентификатор рулона ткани" },
+    fabricType: { type: Type.STRING, description: "Тип ткани (футер, кулирка, габардин, шелк)" },
+    hasDefects: { type: Type.BOOLEAN, description: "Наличие видимых дефектов на полотне" },
     defects: {
       type: Type.ARRAY,
-      description: 'Матаның локализацияланған аномалиялар тізімі',
+      description: "Список обнаруженных дефектов полотна с 2D координатами боксов",
       items: {
         type: Type.OBJECT,
         properties: {
-          defectId: { type: Type.STRING },
-          category: { 
-            type: Type.STRING, 
-            enum: ['OIL_STAIN', 'WEAVING_KNOT', 'LADDER_RUN', 'WEFT_SKEW_ANGLE', 'COLOR_STREAK', 'HOLE'],
-            description: 'Мата ақауының түрі'
+          defectType: {
+            type: Type.STRING,
+            enum: ["oil_stain", "weave_knot", "thread_pull", "color_shading", "hole", "misweave"],
+            description: "Класс дефекта полотна"
           },
-          confidenceScore: { type: Type.NUMBER, description: 'Модель сенімділігі 0.0 бастап 1.0 дейін' },
-          severity: { type: Type.STRING, enum: ['CRITICAL', 'MAJOR', 'MINOR'] },
+          confidence: { type: Type.NUMBER, description: "Уверенность детекции (0.0 - 1.0)" },
+          severity: { type: Type.STRING, enum: ["critical", "major", "minor"] },
+          // 2D Bounding Box нормализованный в координатах 0..1000 [ymin, xmin, ymax, xmax]
           box2d: {
             type: Type.ARRAY,
             items: { type: Type.INTEGER },
-            description: '0..1000 шкаласындағы нормализацияланған бокс координаталары [ymin, xmin, ymax, xmax]'
+            description: "Координаты [ymin, xmin, ymax, xmax] в масштабе 1000x1000"
           },
-          exclusionZoneMarginMm: { 
-            type: Type.INTEGER, 
-            description: 'Лазерлік проекция үшін ақау айналасындағы оқшаулау аймағының қашықтығы (мм)'
-          },
-          description: { type: Type.STRING, description: 'Ақау сипатының қысқаша сипаттамасы' }
+          recommendedExclusionMarginMm: {
+            type: Type.INTEGER,
+            description: "Рекомендуемый технологический отступ вокруг дефекта в миллиметрах"
+          }
         },
-        required: ['defectId', 'category', 'confidenceScore', 'severity', 'box2d', 'exclusionZoneMarginMm']
+        required: ["defectType", "confidence", "severity", "box2d", "recommendedExclusionMarginMm"]
       }
+    },
+    fabricSkewAngleDeg: {
+      type: Type.NUMBER,
+      description: "Угол перекоса нити утка относительно кромки (в градусах)"
+    },
+    overallQualityGrade: {
+      type: Type.STRING,
+      enum: ["Grade_A", "Grade_B", "Grade_C_Reject"]
     }
   },
-  required: ['scanTimestamp', 'rollId', 'overallQualityGrade', 'defectsCount', 'defects']
+  required: ["rollId", "hasDefects", "defects", "fabricSkewAngleDeg", "overallQualityGrade"]
 };
 
 export interface DefectScanResult {
-  scanTimestamp: string;
   rollId: string;
-  fabricType: string;
-  overallQualityGrade: 'GRADE_A' | 'GRADE_B' | 'GRADE_REJECT';
-  defectsCount: number;
+  hasDefects: boolean;
   defects: Array<{
-    defectId: string;
-    category: 'OIL_STAIN' | 'WEAVING_KNOT' | 'LADDER_RUN' | 'WEFT_SKEW_ANGLE' | 'COLOR_STREAK' | 'HOLE';
-    confidenceScore: number;
-    severity: 'CRITICAL' | 'MAJOR' | 'MINOR';
+    defectType: string;
+    confidence: number;
+    severity: 'critical' | 'major' | 'minor';
     box2d: [number, number, number, number];
-    exclusionZoneMarginMm: number;
-    description?: string;
+    recommendedExclusionMarginMm: number;
   }>;
+  fabricSkewAngleDeg: number;
+  overallQualityGrade: string;
 }
 
 /**
- * Пішу үстеліндегі матаны талдау үшін Gemini 2.5 Flash шақыру
+ * Анализ 4K-снимка полотна раскройного стола через Gemini 2.5 Flash Vision
+ * @param imageGcsUri - gcs:// путь к кадру в Google Cloud Storage
+ * @param rollMetadata - метаданные артикула ткани
  */
 export async function analyzeFabricSurface(
-  gcsImageUri: string, 
-  metadata: { rollId: string; expectedColor: string; gsmWeight: number }
+  imageGcsUri: string,
+  rollMetadata: { rollId: string; expectedColor: string; gsmWeight: number }
 ): Promise<DefectScanResult> {
-  const startTime = Date.now();
+  const prompt = `Ты — ведущий инженер ОТК текстильного производства. 
+Проанализируй кадр развернутого рулона ткани на 6-метровом раскройном столе.
+Артикул: ${rollMetadata.rollId}, эталонный цвет: ${rollMetadata.expectedColor}, плотность: ${rollMetadata.gsmWeight} г/м2.
+Задачи:
+1. Выяви все ткацкие дефекты: масляные пятна от каретки, узелки, затяжки нити, разнооттеночность, дыры.
+2. Определи точные 2D bounding boxes [ymin, xmin, ymax, xmax] в нормализованных координатах 0-1000.
+3. Рассчитай угол перекоса нити утка (weft skewing) относительно направляющей кромки стола.
+4. Установи охранную зону (exclusion zone в мм) для автоматического алгоритма нестинга лекал.`;
 
   const response = await ai.models.generateContent({
     model: 'gemini-2.5-flash',
@@ -88,34 +93,19 @@ export async function analyzeFabricSurface(
       {
         role: 'user',
         parts: [
-          {
-            fileData: {
-              fileUri: gcsImageUri,
-              mimeType: 'image/jpeg'
-            }
-          },
-          {
-            text: `Тігін цехының жоғары дәлдіктегі оптикалық инспекторы рөліндесің.
-Үстелге жайылған матаның 4K суретін талда (Рулон ID: ${metadata.rollId}, түсі: ${metadata.expectedColor}, тығыздығы: ${metadata.gsmWeight} г/м²).
-Барлық тоқыма түйіндерін, май дақтарын, жіп тартылуларын, көлденең жіптердің қисаюын және тесіктерді анықта.
-Әрбір ақау үшін 0..1000 шкаласында [ymin, xmin, ymax, xmax] 2D bounding box координаталарын бер және лазерлік жүйе үшін Exclusion Zone қашықтығын есепте.`
-          }
+          { fileData: { fileUri: imageGcsUri, mimeType: 'image/jpeg' } },
+          { text: prompt }
         ]
       }
     ],
     config: {
-      temperature: 0.1,
       responseMimeType: 'application/json',
-      responseSchema: FabricDefectResponseSchema
+      responseSchema: FabricDefectResponseSchema,
+      temperature: 0.1, // Минимальная температура для детерминированной точности
+      thinkingConfig: { thinkingBudget: 0 } // Flash режим с ультранизкой латентностью (<350мс)
     }
   });
 
-  const latencyMs = Date.now() - startTime;
-  console.log(`[Gemini 2.5 Flash Vision] Инспекция ${latencyMs} мс ішінде аяқталды. Рулон: ${metadata.rollId}`);
-
-  if (!response.text) {
-    throw new Error('Gemini API мата ақауларын талдауда бос жауап қайтарды');
-  }
-
-  return JSON.parse(response.text) as DefectScanResult;
+  const parsed: DefectScanResult = JSON.parse(response.text || '{}');
+  return parsed;
 }
