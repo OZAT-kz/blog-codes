@@ -1,6 +1,6 @@
 // ==============================================================================
 // Инвентаризация за перекур: Считаем 5 000 коробок на складе через смартфон с Vertex AI Edge (LiteRT / TFLite) и Cloud Firestore
-// Source: OZAT Engineering Blog (https://ozat.kz)
+// Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/warehouse_firestore_sync_ru.ts
 // ==============================================================================
 
