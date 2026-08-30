@@ -1,8 +1,8 @@
-// ==============================================================================
-// ga4_propensity_score_ru.sql
-// Source: OZAT Engineering Hub (https://ozat.kz)
-// GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/ga4_propensity_score_ru.sql
-// ==============================================================================
+-- ==============================================================================
+-- AdSense в Казахстане приносит копейки? Как мы сделали x3 к RPM, скормив GA4 Predictive Audiences в Google Ad Manager
+-- Source: OZAT Engineering Hub (https://ozat.kz)
+-- GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/ga4_propensity_score_ru.sql
+-- ==============================================================================
 
 -- Расчет кастомного индекса вовлеченности (Propensity Score) в BigQuery
 -- Анализируем сырые логи GA4 для выявления Premium-пользователей
