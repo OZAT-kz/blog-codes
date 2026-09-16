@@ -1,5 +1,5 @@
 # ==============================================================================
-# Telegram Webhook Bot with Kaspi Receipt Anti-Fraud Verification
+# Анти-фрод Kaspi-чеков: Детекция генераторов фальшивок и Replay-атак на Gemini 2.5 Flash + Firestore за 1.4 секунды
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/telegram-kaspi-guard-webhook.py
 # ==============================================================================
