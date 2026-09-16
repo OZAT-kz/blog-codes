@@ -1,5 +1,5 @@
 # ==============================================================================
-# WhatsApp Voice-to-CRM Webhook on Gemini 2.5 Flash
+# Голосовые на 3 минуты в WhatsApp: Авто-транскрипция и создание заказа в 1С/МойСклад через Gemini 2.5 Flash Audio
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/whatsapp_audio_to_1c_gemini.py
 # ==============================================================================
