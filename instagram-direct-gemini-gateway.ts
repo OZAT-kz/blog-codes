@@ -1,5 +1,5 @@
 // ==============================================================================
-// Instagram Direct Shopping on Gemini 2.5 Flash + Kaspi Pay Webhook
+// «Цена в дайрект» убивает 60% продаж: Автономный Direct-шоппинг на Gemini 2.5 Flash + Instagram Graph API + Kaspi Pay Webhook
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/instagram-direct-gemini-gateway.ts
 // ==============================================================================
