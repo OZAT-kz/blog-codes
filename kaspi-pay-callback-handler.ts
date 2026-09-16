@@ -1,5 +1,5 @@
 // ==============================================================================
-// Kaspi Pay Webhook Callback & Instant Order Fulfillment
+// «Цена в дайрект» убивает 60% продаж: Автономный Direct-шоппинг на Gemini 2.5 Flash + Instagram Graph API + Kaspi Pay Webhook
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/kaspi-pay-callback-handler.ts
 // ==============================================================================
