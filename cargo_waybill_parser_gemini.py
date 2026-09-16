@@ -1,5 +1,5 @@
 # ==============================================================================
-# Document AI + Gemini 2.5 Flash Pipeline
+# Карго-Трекер без нервов: Парсинг китайских накладных (1688 / Taobao / WeChat) с фото через Document AI + Gemini 2.5 Flash
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/cargo_waybill_parser_gemini.py
 # ==============================================================================
