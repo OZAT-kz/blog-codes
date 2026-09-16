@@ -1,5 +1,5 @@
 # ==============================================================================
-# Fuzzy Search and CRM Integration (MoySklad)
+# Голосовые на 3 минуты в WhatsApp: Авто-транскрипция и создание заказа в 1С/МойСклад через Gemini 2.5 Flash Audio
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/moysklad_1c_integration.py
 # ==============================================================================
