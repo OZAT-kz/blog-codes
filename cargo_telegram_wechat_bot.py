@@ -1,5 +1,5 @@
 # ==============================================================================
-# FastAPI Webhook for Cargo Parsing
+# Карго-Трекер без нервов: Парсинг китайских накладных (1688 / Taobao / WeChat) с фото через Document AI + Gemini 2.5 Flash
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/cargo_telegram_wechat_bot.py
 # ==============================================================================
