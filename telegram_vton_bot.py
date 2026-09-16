@@ -1,5 +1,5 @@
 # ==============================================================================
-# FastAPI Webhook for Telegram VTON
+# Виртуальная примерочная для Instagram-бутиков: Image-to-Image генерация на Imagen 3 / Vertex AI по фото клиента
 # Source: OZAT Engineering Hub (https://ozat.kz)
 # GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/telegram_vton_bot.py
 # ==============================================================================
