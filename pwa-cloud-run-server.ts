@@ -1,5 +1,5 @@
 // ==============================================================================
-// PWA Express SSR Server on Google Cloud Run
+// Теневой бан в Instagram: Перенос 60 000 подписчиков на PWA и монетизация в AdSense
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/pwa-cloud-run-server.ts
 // ==============================================================================
