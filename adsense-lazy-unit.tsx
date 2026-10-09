@@ -1,5 +1,5 @@
 // ==============================================================================
-// Lazy-Loading Google AdSense React Component
+// Теневой бан в Instagram: Перенос 60 000 подписчиков на PWA и монетизация в AdSense
 // Source: OZAT Engineering Hub (https://ozat.kz)
 // GitHub: https://github.com/OZAT-kz/blog-codes/blob/main/adsense-lazy-unit.tsx
 // ==============================================================================
